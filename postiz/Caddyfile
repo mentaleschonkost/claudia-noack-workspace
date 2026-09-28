@@ -1,0 +1,10 @@
+# HTTPS-Tor für Postiz. Caddy besorgt und erneuert das Zertifikat automatisch.
+# Die Domain kommt aus POSTIZ_DOMAIN in der .env (z. B. social.mentaleschonkost.de).
+{$POSTIZ_DOMAIN} {
+	encode gzip zstd
+	# Große Videos (Reels, YouTube) erlauben
+	request_body {
+		max_size 2GB
+	}
+	reverse_proxy postiz:5000
+}

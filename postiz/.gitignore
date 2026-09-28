@@ -1,0 +1,4 @@
+# Geheimnisse & Daten – nie hochladen
+.env
+backups/
+automation/zugang.env
