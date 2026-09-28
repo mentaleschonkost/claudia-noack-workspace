@@ -224,6 +224,23 @@ services:
     depends_on:
       - postiz
 
+  # ── Laptop ohne Server: docker compose --profile tunnel up -d ────────────
+  # Cloudflare-Tunnel: macht Postiz unter deiner https-Adresse erreichbar,
+  # ohne offene Ports und ohne Server. Token steht in .env.
+  cloudflared:
+    profiles: [tunnel]
+    image: cloudflare/cloudflared:2025.8.0
+    container_name: postiz-tunnel
+    restart: always
+    logging: *logging
+    command: ["tunnel", "--no-autoupdate", "run"]
+    environment:
+      TUNNEL_TOKEN: ${CLOUDFLARE_TUNNEL_TOKEN:-}
+    networks:
+      - postiz-network
+    depends_on:
+      - postiz
+
 volumes:
   postgres-volume:
   postiz-redis-data:

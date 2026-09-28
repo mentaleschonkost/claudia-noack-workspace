@@ -29,6 +29,7 @@ Postiz muss **rund um die Uhr** laufen, damit geplante Posts pünktlich rausgehe
 | Möglichkeit | Kosten | Geeignet für |
 |---|---|---|
 | **A · Eigener kleiner Server** ⭐ empfohlen | ca. 5–8 €/Monat | Echter Betrieb: läuft immer, alle Plattformen funktionieren |
+| **B+ · Laptop + Cloudflare-Tunnel** | 0 € | Wie B, aber mit echter https-Adresse → **alle Plattformen** lassen sich verbinden. Posts gehen raus, solange der Laptop an ist. |
 | B · Auf deinem Computer | 0 € | Zum Ausprobieren und Kennenlernen. Posts gehen nur raus, solange der Rechner an ist. Instagram/Facebook/LinkedIn lassen sich hier meist **nicht** verbinden (sicher klappen Bluesky, Mastodon, Telegram, Discord). |
 | C · Postiz-Cloud (postiz.com) | ab ca. 29 $/Monat | Wenn du dich um gar nichts kümmern willst. Die Automatisierung aus Kapitel 6 funktioniert dort genauso. |
 
@@ -53,6 +54,24 @@ Postiz muss **rund um die Uhr** laufen, damit geplante Posts pünktlich rausgehe
    ```
    Tipp: Heißt der Ordner bei dir anders, tippe `cd ` (mit Leerzeichen) und **ziehe den Ordner `postiz` einfach ins Terminal-Fenster** – der Pfad wird automatisch eingefügt. Dann Enter.
 4. Beim ersten Mal dauert es 5–10 Minuten. Wenn **„Postiz ist bereit!"** erscheint: <http://localhost:4007> im Browser öffnen.
+
+### Variante B+ – Laptop mit eigener https-Adresse (kostenlos, über Cloudflare-Tunnel)
+
+So klappen auch Facebook, Instagram & LinkedIn – ohne Server. Voraussetzung: deine Domain liegt bei Cloudflare.
+**Wichtig:** Posts gehen nur raus, solange der Laptop an ist, Docker Desktop läuft und er nicht schläft.
+
+1. **Tunnel anlegen:** Cloudflare-Dashboard → *Zero Trust* (bzw. *Networking*) → **Tunnels → „Tunnel erstellen"** → Typ **Cloudflared** → Name `postiz-laptop` → Umgebung **Docker** wählen → den angezeigten Befehl (`docker run … --token eyJ…`) **kopieren** (noch nicht ausführen).
+2. **Adresse zuweisen** (nächste Seite, „Öffentlicher Hostname"): Subdomain `some`, Domain `mentale-schonkost.de`, Typ **HTTP**, URL **`postiz:5000`** → Speichern.
+   Meldet Cloudflare, dass es den Eintrag schon gibt: den alten `some`-Eintrag unter *DNS* löschen und nochmal speichern.
+3. **Auf dem Laptop** (Docker Desktop läuft) im Ordner `postiz`:
+   ```bash
+   ./setup.sh --tunnel some.mentale-schonkost.de
+   ```
+   Bei „Tunnel-Token einfügen" den kopierten Befehl einfügen (es wird nichts angezeigt – das ist Absicht) → Enter.
+4. Nach „Postiz ist bereit!" **sofort** https://some.mentale-schonkost.de öffnen und dein Konto anlegen.
+5. **Laptop wach halten:** Mac → Systemeinstellungen → Batterie/Energie → „Automatischen Ruhezustand verhindern, wenn Bildschirm aus ist" (am Netzteil). Docker Desktop → Einstellungen → „Start Docker Desktop when you sign in".
+
+> Große Videos: Über den kostenlosen Tunnel gehen Uploads bis 100 MB.
 
 ### Variante A – auf deinem Server (für den Dauerbetrieb)
 

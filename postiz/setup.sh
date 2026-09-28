@@ -4,6 +4,8 @@
 #
 #  Auf deinem Rechner:        ./setup.sh
 #  Auf einem Server (HTTPS):  ./setup.sh --server social.deine-domain.de
+#  Laptop + Cloudflare-Tunnel: ./setup.sh --tunnel social.deine-domain.de
+#                              (fragt einmal nach dem Tunnel-Token)
 #  Nur .env anlegen:          ./setup.sh --no-start
 #
 #  Mehrfach ausführen ist ungefährlich: vorhandene Passwörter bleiben erhalten.
@@ -12,16 +14,20 @@ set -euo pipefail
 cd "$(dirname "$0")"
 
 DOMAIN=""
+TUNNEL_DOMAIN=""
 START=1
 while [ $# -gt 0 ]; do
   case "$1" in
     --server) DOMAIN="${2:-}"; shift 2 || { echo "✗ Bitte Domain angeben: ./setup.sh --server social.deine-domain.de"; exit 1; } ;;
+    --tunnel) TUNNEL_DOMAIN="${2:-}"; shift 2 || { echo "✗ Bitte Domain angeben: ./setup.sh --tunnel social.deine-domain.de"; exit 1; } ;;
     --no-start) START=0; shift ;;
-    -h|--help) sed -n '3,9p' "$0"; exit 0 ;;
+    -h|--help) sed -n '3,11p' "$0"; exit 0 ;;
     *) echo "✗ Unbekannte Option: $1"; exit 1 ;;
   esac
 done
-DOMAIN="${DOMAIN#https://}"; DOMAIN="${DOMAIN#http://}"; DOMAIN="${DOMAIN%%/*}"
+clean_domain() { local d="${1#https://}"; d="${d#http://}"; printf '%s' "${d%%/*}"; }
+DOMAIN="$(clean_domain "$DOMAIN")"
+TUNNEL_DOMAIN="$(clean_domain "$TUNNEL_DOMAIN")"
 
 say() { printf '\n\033[1;35m▸ %s\033[0m\n' "$*"; }
 ok()  { printf '  \033[32m✓\033[0m %s\n' "$*"; }
@@ -39,7 +45,7 @@ set_env() {
   fi
   cat "$tmp" > .env; rm -f "$tmp"
 }
-get_env() { grep "^$1=" .env | head -1 | cut -d= -f2-; }
+get_env() { { grep "^$1=" .env || true; } | head -1 | cut -d= -f2-; }
 
 # ── 1. Voraussetzungen ─────────────────────────────────────────────────────
 if [ "$START" = 1 ]; then
@@ -80,8 +86,27 @@ if [ -n "$DOMAIN" ]; then
   set_env NOT_SECURED ""
   ok "Server-Modus: https://${DOMAIN}"
 fi
+if [ -n "$TUNNEL_DOMAIN" ]; then
+  set_env POSTIZ_URL "https://${TUNNEL_DOMAIN}"
+  set_env POSTIZ_DOMAIN ""
+  set_env NOT_SECURED ""
+  if [ -z "$(get_env CLOUDFLARE_TUNNEL_TOKEN)" ]; then
+    if [ -t 0 ]; then
+      printf '  Tunnel-Token einfügen (wird nicht angezeigt) und Enter drücken: '
+      read -rs token; echo
+      token="$(printf '%s' "$token" | tr -d '[:space:]')"
+      token="${token##*--token}"   # falls der ganze Befehl aus Cloudflare eingefügt wurde
+      [ -n "$token" ] || { echo "  ✗ Kein Token eingegeben."; exit 1; }
+      set_env CLOUDFLARE_TUNNEL_TOKEN "$token"
+    else
+      echo "  ✗ CLOUDFLARE_TUNNEL_TOKEN fehlt in .env"; exit 1
+    fi
+  fi
+  ok "Tunnel-Modus: https://${TUNNEL_DOMAIN}"
+fi
 URL="$(get_env POSTIZ_URL)"
 DOMAIN="$(get_env POSTIZ_DOMAIN)"
+TUNNEL_TOKEN="$(get_env CLOUDFLARE_TUNNEL_TOKEN)"
 
 if grep -q "=CHANGE_ME" .env; then echo "  ✗ In .env steht noch CHANGE_ME"; exit 1; fi
 echo "SETUP_OK"
@@ -91,6 +116,7 @@ echo "SETUP_OK"
 # ── 3. Starten ─────────────────────────────────────────────────────────────
 PROFILE=()
 [ -n "$DOMAIN" ] && PROFILE=(--profile https)
+[ -n "$TUNNEL_TOKEN" ] && PROFILE=(--profile tunnel)
 say "Starte Postiz (beim ersten Mal 5–10 Minuten Download)"
 docker compose ${PROFILE[@]+"${PROFILE[@]}"} up -d
 

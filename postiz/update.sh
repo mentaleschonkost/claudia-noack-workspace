@@ -39,6 +39,7 @@ echo "▸ 1/3 Sicherung"
 
 PROFILE=()
 grep -q '^POSTIZ_DOMAIN=.\+' .env && PROFILE=(--profile https)
+grep -q '^CLOUDFLARE_TUNNEL_TOKEN=.\+' .env && PROFILE=(--profile tunnel)
 
 echo "▸ 2/3 Neue Version herunterladen"
 docker compose ${PROFILE[@]+"${PROFILE[@]}"} pull
