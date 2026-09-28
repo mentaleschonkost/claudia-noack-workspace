@@ -1,7 +1,7 @@
 # ─────────────────────────────────────────────────────────────────────────────
 #  Postiz – Social-Media-Manager (optimierte Version für Mentale Schonkost)
 #
-#  Basis: offizielles gitroomhq/postiz-docker-compose (Postiz v1.47)
+#  Basis: offizielles gitroomhq/postiz-docker-compose (Postiz v2.24)
 #  Unterschiede zum Original – siehe ANLEITUNG.md, Abschnitt "Was optimiert ist":
 #    • alle Passwörter & Schlüssel liegen in .env (nicht mehr im Klartext hier)
 #    • Registrierung gesperrt – nur DU hast ein Konto (dein erstes Konto geht immer)
@@ -22,7 +22,7 @@ x-logging: &logging
 
 services:
   postiz:
-    image: ghcr.io/gitroomhq/postiz-app:${POSTIZ_VERSION:-v1.47.0}
+    image: ghcr.io/gitroomhq/postiz-app:${POSTIZ_VERSION:-v2.24.0}
     container_name: postiz
     restart: always
     logging: *logging

@@ -3,7 +3,7 @@
 #  Postiz aktualisieren – sicher: erst Sicherung, dann Update
 #
 #  ./update.sh            → neueste offizielle Version (wird in .env gemerkt)
-#  ./update.sh v1.48.0    → genau diese Version
+#  ./update.sh v2.25.0    → genau diese Version
 #
 #  Zurück zur alten Version, falls etwas nicht klappt:
 #    ./update.sh <alte-version>   und ggf.  ./backup.sh --restore backups/<datei>
@@ -12,14 +12,14 @@
 set -euo pipefail
 cd "$(dirname "$0")"
 
-# Neueste Version aus der GitHub-Weiterleitung lesen (…/releases/tag/v1.48.0 → v1.48.0)
+# Neueste Version aus der GitHub-Weiterleitung lesen (…/releases/tag/v2.25.0 → v2.25.0)
 tag_from_headers() { tr -d '\r' | awk 'tolower($1)=="location:" {n=split($2,a,"/"); print a[n]}' | tail -1; }
 
 CURRENT="$(grep '^POSTIZ_VERSION=' .env | cut -d= -f2- || true)"
 TARGET="${1:-}"
 if [ -z "$TARGET" ]; then
   TARGET="$(curl -fsSI https://github.com/gitroomhq/postiz-app/releases/latest 2>/dev/null | tag_from_headers || true)"
-  [ -n "$TARGET" ] || { echo "✗ Neueste Version nicht ermittelbar. Bitte direkt angeben: ./update.sh v1.48.0"; exit 1; }
+  [ -n "$TARGET" ] || { echo "✗ Neueste Version nicht ermittelbar. Bitte direkt angeben: ./update.sh v2.25.0"; exit 1; }
 fi
 if [ "$TARGET" = "$CURRENT" ] && [ -z "${1:-}" ]; then
   echo "✓ Du hast schon die neueste Version ($CURRENT)."
@@ -35,7 +35,7 @@ fi
 cat "$tmp" > .env; rm -f "$tmp"
 
 echo "▸ 1/3 Sicherung"
-./backup.sh
+bash ./backup.sh
 
 PROFILE=()
 grep -q '^POSTIZ_DOMAIN=.\+' .env && PROFILE=(--profile https)
