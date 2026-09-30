@@ -76,28 +76,55 @@ Die lange Version beginnt mit einem kurzen Einstieg nach Minto (Situation → Hi
 
 ---
 
-**Variante A – Technik-Mut-Check**
+**Variante A – Technik-Mut-Check** (Fakten aus deinem Newsletter-Entwurf vom 28.09.)
 
-⚠️ Zum Check selbst habe ich nur den Link, keine Inhalte. Die Stützen unten sind deshalb bewusst allgemein –
-bitte ergänzen oder korrigieren (z. B. Dauer, ob kostenlos, was man am Ende bekommt).
+Was der Check laut deinem Newsletter ist: kleiner Selbsttest · 5 Fragen · 2 Minuten · kein Richtig, kein Falsch ·
+am Ende ein Ergebnis und drei kleine erste Schritte, die passen.
 
 *Kurz (Instagram):*
 
-> Der erste Schritt mit KI muss nicht groß sein: Der Technik-Mut-Check zeigt dir, wo du gerade stehst.
+> KI ist weiblich. Finde in 2 Minuten heraus, wie viel Technik-Mut schon in dir steckt.
 >
-> · Ohne Vorwissen: [was die Teilnehmerin tut – z. B. „ein paar Fragen beantworten“]
-> · Ohne Fachchinesisch: [wie das Ergebnis aussieht]
-> · Mit Richtung: [was sie danach weiß oder bekommt]
+> · Schnell: 5 Fragen, kein Richtig, kein Falsch
+> · Persönlich: dein Ergebnis – vorsichtig, neugierig oder mutig
+> · Machbar: drei kleine erste Schritte, die zu dir passen
 >
-> Zum Check: mentale-schonkost.de/technik-mut-check
+> Zum Technik-Mut-Check: [Link – siehe Hinweis unten]
 
-- Überschrift: *Wie viel Technik-Mut steckt in dir?* (dein Newsletter-Betreff)
+*Lang (Facebook):*
+
+> Viele Frauen machen KI längst: Sie sehen innerlich, wie etwas werden soll, und spüren, was stimmig ist. Genau das braucht es im Umgang mit KI.
+>
+> Was bremst, ist selten fehlendes Können – sondern die Sorge, etwas falsch zu machen, und ein altes „Lass das mal die Männer machen“.
+>
+> KI ist weiblich. Der Technik-Mut-Check zeigt dir in 2 Minuten, wo du gerade stehst:
+>
+> · Schnell: 5 Fragen, kein Richtig, kein Falsch
+> · Persönlich: dein Ergebnis – vorsichtig, neugierig oder mutig
+> · Machbar: drei kleine erste Schritte, die zu dir passen
+>
+> Zum Technik-Mut-Check: [Link – siehe Hinweis unten]
+
+- Überschrift: *KI ist weiblich.*
+- Beschreibung: *Technik-Mut-Check · 5 Fragen · 2 Minuten*
 - Button: „Mehr dazu“
+
+**Bitte vor dem Schalten prüfen:**
+1. **Link:** Du hattest mir `mentale-schonkost.de/technik-mut-check` genannt, im Newsletter steht
+   `mentale-schonkost.de/kicomaedelsabend#technikmut`. Welcher ist richtig?
+2. **Drei Ergebnis-Typen:** „vorsichtig, neugierig, mutig“ habe ich aus deinen MailerLite-Gruppen
+   (ki-quiz-vorsichtige / -neugierige / -mutige) abgeleitet – stimmt das so?
+3. **E-Mail-Adresse:** Muss man für das Ergebnis die E-Mail angeben? Wenn ja, sammelt die Anzeige Kontakte
+   für deine Liste (dann in Meta als Ziel „Leads“ statt „Traffic“ überlegen) – und der Anzeigentext sollte das
+   ehrlich andeuten, z. B. „Dein Ergebnis kommt per Mail.“
+
+**Warum diese Variante zum Budget passt:** Ein 2-Minuten-Test ist eine viel kleinere Entscheidung als ein 4-Wochen-Programm.
+Wer den Check macht, landet (falls mit E-Mail) in deinen Quiz-Gruppen – und die bekommen deine Newsletter-Serie zum Mädelsabend.
 
 ---
 
-**Optional: „KI ist weiblich“** – falls das dein Slogan ist, eignet er sich als Überschrift für Variante B:
-*KI ist weiblich. Der KI & Co. Mädelsabend ab 08.10.* (Bitte bestätigen, bevor du ihn nutzt.)
+**„KI ist weiblich.“** – stammt aus deinem Newsletter und passt auch als Überschrift für Variante B:
+*KI ist weiblich. Der KI & Co. Mädelsabend ab 08.10.*
 
 **Bild:** eine deiner Grafiken aus dem Bildmaterial – quadratisch (1080 × 1080) für den Feed, 9:16 (1080 × 1920) für Stories.
 
