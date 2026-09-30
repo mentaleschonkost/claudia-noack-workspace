@@ -99,18 +99,35 @@
     }
     .hero h1 .name { color: var(--gold-soft); font-style: italic; }
     .hero p.lead { font-size: 1.08rem; max-width: 34em; color: rgba(245, 240, 232, 0.88); }
-    .hero .facts {
-      margin-top: 32px;
-      display: flex; flex-wrap: wrap; gap: 10px;
-      list-style: none;
-    }
-    .hero .facts li {
-      font-size: 0.85rem;
-      border: 1px solid rgba(232, 201, 122, 0.45);
+    .quickfinder { margin-top: 32px; }
+    .quickfinder p { font-size: 0.75rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold-soft); margin-bottom: 10px; }
+    .quickfinder ul { display: flex; flex-wrap: wrap; gap: 10px; list-style: none; }
+    .quickfinder a {
+      display: inline-block;
+      font-size: 0.92rem; font-weight: 500; text-decoration: none;
+      border: 1px solid rgba(232, 201, 122, 0.55);
       border-radius: 999px;
-      padding: 4px 14px;
+      padding: 7px 18px;
       color: var(--creme);
+      transition: background 0.2s, color 0.2s;
     }
+    .quickfinder a:hover, .quickfinder a:focus-visible { background: var(--gold-soft); color: var(--petrol-deep); }
+    main section { scroll-margin-top: 16px; }
+
+    .gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 18px; margin-top: 22px; }
+    .bild {
+      background: #FBF8F2; border: 1px solid var(--line); border-radius: var(--radius-m);
+      overflow: hidden; display: flex; flex-direction: column;
+    }
+    .bild .vorschau { display: block; background: var(--creme-deep); aspect-ratio: 1 / 1; }
+    .bild img { width: 100%; height: 100%; object-fit: contain; display: block; }
+    .bild .info { padding: 12px 14px 14px; display: flex; flex-direction: column; gap: 10px; flex: 1; }
+    .bild .titel { font-size: 0.9rem; color: var(--ink); }
+    .bild .aktionen { display: flex; flex-wrap: wrap; gap: 8px; margin-top: auto; }
+    .bild .btn { font-size: 0.85rem; padding: 7px 16px; }
+    .btn.leise { background: transparent; border-color: rgba(154, 52, 18, 0.45); color: #9A3412; }
+    .btn.leise:hover { background: #9A3412; color: #fff; }
+    .leer-hinweis { font-size: 0.92rem; color: var(--ink-soft); margin-top: 16px; }
 
     /* ─── Abschnitte ──────────────────────────────────────── */
     main section { padding: 72px 0; border-bottom: 1px solid var(--line); position: relative; }
@@ -329,13 +346,16 @@
   <div class="wrap">
     <div class="topline"><p class="brand">Claudia Noack · Mentale Schonkost</p><a class="back" id="back-link" href="/start" hidden>Zu meinen Bereichen</a></div>
     <h1>Hallo<span id="greet-name"></span>,<br>ich freue mich über deine Unterstützung!</h1>
-    <p class="lead">Hier findest du alles, was du brauchst, um den KI &amp; Co. Mädelsabend in deiner Community zu teilen: Hintergrund, Video, Links, fertige Texte und Antworten auf die üblichen Fragen.<span class="draft-badge">Entwurf</span></p>
-    <ul class="facts" aria-label="Eckdaten auf einen Blick">
-      <li>Start 08.10.2026</li>
-      <li>4× donnerstags, 19:30 Uhr</li>
-      <li>online per Zoom</li>
-      <li>maximal 8 Frauen</li>
-    </ul>
+    <p class="lead">Hier findest du alles, was du brauchst, um den KI &amp; Co. Mädelsabend in deiner Community zu teilen: Infos, fertige Texte, Bildmaterial, Links und Antworten auf die üblichen Fragen.<span class="draft-badge">Entwurf</span></p>
+    <nav class="quickfinder" aria-label="Quickfinder">
+      <p>Quickfinder</p>
+      <ul>
+        <li><a href="#projekt">Infos</a></li>
+        <li><a href="#texte">Texte</a></li>
+        <li id="qf-bilder" hidden><a href="#bilder">Bildmaterial</a></li>
+        <li><a href="#links">Links</a></li>
+      </ul>
+    </nav>
   </div>
   <svg class="waves" viewBox="0 0 1440 120" preserveAspectRatio="none" aria-hidden="true" focusable="false">
     <g>
@@ -387,7 +407,7 @@
 
       <h3>Wie du mitmachen kannst</h3>
       <ul class="plain">
-        <li><b>Teilen:</b> Ein Post, eine Story oder ein Hinweis in deinem Newsletter. Die Texte findest du weiter unten zum Kopieren.<span class="draft-badge">Entwurf</span></li>
+        <li><b>Teilen:</b> Ein Post, eine Story oder ein Hinweis in deinem Newsletter. Texte und Grafiken findest du weiter unten zum Kopieren und Herunterladen.<span class="draft-badge">Entwurf</span></li>
         <li id="mitmachen-video" hidden><b>Video:</b> Die Aufzeichnung vom Kennenlern-Abend findest du gleich hier unten. Das ist ein guter Einstieg, den du einfach weitergeben kannst.<span class="draft-badge">Entwurf</span></li>
         <li><b>Gemeinsamer Abend:</b> Wenn deine Community erst mal reinschnuppern will, machen wir gern einen kostenlosen Mädelsabend exklusiv für sie.</li>
       </ul>
@@ -411,29 +431,7 @@
     </div>
   </section>
 
-  <!-- 3 · Links -->
-  <section id="links">
-    <div class="wrap">
-      <p class="kicker">Zum Weitergeben</p>
-      <h2>Die Links</h2>
-      <div class="cards">
-        <div class="card">
-          <h3>Anmeldeseite</h3>
-          <p>Alle Infos zum KI &amp; Co. Mädelsabend und die Anmeldung.</p>
-          <p class="url">mentale-schonkost.de/kicomaedelsabend</p>
-          <a class="btn" href="https://mentale-schonkost.de/kicomaedelsabend" target="_blank" rel="noopener">Seite öffnen</a>
-        </div>
-        <div class="card">
-          <h3>Technik-Mut-Check</h3>
-          <p>Ein zweiter Link, den du weitergeben kannst.<span class="draft-badge">Entwurf</span></p>
-          <p class="url">mentale-schonkost.de/technik-mut-check</p>
-          <a class="btn ghost" href="https://mentale-schonkost.de/technik-mut-check" target="_blank" rel="noopener">Check öffnen</a>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- 4 · Werbetexte -->
+  <!-- 3 · Werbetexte -->
   <section id="texte">
     <div class="wrap">
       <p class="kicker">Fertige Texte zum Teilen</p>
@@ -466,7 +464,40 @@ KI &amp; Co. Mädelsabend · ab 08.10. · max. 8 Frauen
     </svg>
   </section>
 
-  <!-- 5 · FAQ -->
+  <!-- 4 · Bildmaterial -->
+  <section id="bilder" hidden>
+    <div class="wrap">
+      <p class="kicker">Bildmaterial</p>
+      <h2>Grafiken zum Teilen</h2>
+      <p>Tippe auf „Herunterladen“, speichere die Grafik und poste sie zusammen mit einem der Texte.<span class="draft-badge">Entwurf</span></p>
+      <div class="gallery" id="bilder-liste"></div>
+      <p class="leer-hinweis" id="bilder-leer" hidden>Noch keine Grafiken hochgeladen – dieser Bereich ist für Partnerinnen ausgeblendet.</p>
+    </div>
+  </section>
+
+  <!-- 5 · Links -->
+  <section id="links">
+    <div class="wrap">
+      <p class="kicker">Zum Weitergeben</p>
+      <h2>Die Links</h2>
+      <div class="cards">
+        <div class="card">
+          <h3>Anmeldeseite</h3>
+          <p>Alle Infos zum KI &amp; Co. Mädelsabend und die Anmeldung.</p>
+          <p class="url">mentale-schonkost.de/kicomaedelsabend</p>
+          <a class="btn" href="https://mentale-schonkost.de/kicomaedelsabend" target="_blank" rel="noopener">Seite öffnen</a>
+        </div>
+        <div class="card">
+          <h3>Technik-Mut-Check</h3>
+          <p>Ein zweiter Link, den du weitergeben kannst.<span class="draft-badge">Entwurf</span></p>
+          <p class="url">mentale-schonkost.de/technik-mut-check</p>
+          <a class="btn ghost" href="https://mentale-schonkost.de/technik-mut-check" target="_blank" rel="noopener">Check öffnen</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6 · FAQ -->
   <section id="faq">
     <div class="wrap">
       <p class="kicker">Fragen &amp; Antworten</p>
@@ -499,7 +530,7 @@ KI &amp; Co. Mädelsabend · ab 08.10. · max. 8 Frauen
     </div>
   </section>
 
-  <!-- 6 · Kontakt -->
+  <!-- 7 · Kontakt -->
   <section id="kontakt" class="contact">
     <div class="wrap">
       <p class="kicker">Kontakt</p>
@@ -554,7 +585,9 @@ KI &amp; Co. Mädelsabend · ab 08.10. · max. 8 Frauen
   }
 
   // Einstellungen auf die Seite anwenden (auch erneut nach dem Speichern)
+  var aktuell = {};
   function anwenden(e) {
+    aktuell = e;
     var preis = clean(e.preis), gegenleistung = clean(e.gegenleistung), vid = youtubeId(e.youtube_link);
 
     document.getElementById("preis-zeile").textContent = preis ? preis + PREIS_REST : PREIS_LEER;
@@ -600,6 +633,7 @@ KI &amp; Co. Mädelsabend · ab 08.10. · max. 8 Frauen
     if (!vid) offen.push("Kein YouTube-Link eingetragen – der Video-Bereich ist für Partnerinnen ausgeblendet.");
     if (!preis) offen.push("Preis fehlt – auf der Seite steht „siehe Anmeldeseite“.");
     if (!gegenleistung) offen.push("Gegenleistung ist nicht festgelegt – FAQ 1 verweist auf ein Gespräch.");
+    if (bilderHinweis) offen.push(bilderHinweis);
     hinweiseZeigen(offen);
   }
 
@@ -668,7 +702,113 @@ KI &amp; Co. Mädelsabend · ab 08.10. · max. 8 Frauen
         })
         .then(function () { save.disabled = false; });
     });
+    // Bildmaterial hochladen
+    wrap.appendChild(el("h4", { style: "margin-top:22px" }, "Bildmaterial hochladen"));
+    wrap.appendChild(el("label", { "for": "set-bild" }, "Grafik(en) auswählen"));
+    var datei = el("input", { id: "set-bild", type: "file", accept: "image/jpeg,image/png,image/webp,image/gif", multiple: "" });
+    wrap.appendChild(datei);
+    wrap.appendChild(el("p", { "class": "hint" }, "JPG, PNG, WebP oder GIF, bis 15 MB pro Bild. Mehrere auf einmal möglich."));
+    wrap.appendChild(el("label", { "for": "set-unterschrift" }, "Bildunterschrift (optional)"));
+    var unterschrift = el("input", { id: "set-unterschrift", type: "text", maxlength: "200", autocomplete: "off" });
+    wrap.appendChild(unterschrift);
+    wrap.appendChild(el("p", { "class": "hint" }, "z. B. „Feed-Post quadratisch“ oder „Story 9:16“ – leer = Dateiname."));
+    var reihe = el("div", { "class": "row" });
+    var hoch = el("button", { type: "button", "class": "btn copy-btn", id: "bild-hochladen" }, "Hochladen");
+    var hochStatus = el("span", { "class": "status", id: "bild-status", role: "status" });
+    reihe.appendChild(hoch);
+    reihe.appendChild(hochStatus);
+    wrap.appendChild(reihe);
+    hoch.addEventListener("click", function () {
+      var dateien = Array.prototype.slice.call(datei.files || []);
+      if (!dateien.length) { hochStatus.className = "status err"; hochStatus.textContent = "Bitte zuerst eine Grafik auswählen."; return; }
+      var zuGross = dateien.filter(function (f) { return f.size > 15 * 1024 * 1024; });
+      if (zuGross.length) { hochStatus.className = "status err"; hochStatus.textContent = zuGross[0].name + " ist größer als 15 MB."; return; }
+      hoch.disabled = true;
+      hochStatus.className = "status";
+      var text = clean(unterschrift.value);
+      var i = 0;
+      function naechste() {
+        if (i >= dateien.length) return Promise.resolve();
+        var f = dateien[i++];
+        hochStatus.textContent = "Lade hoch " + i + " von " + dateien.length + " …";
+        return fetch("/api/promo/" + encodeURIComponent(slug) + "/bild", {
+          method: "POST",
+          credentials: "same-origin",
+          headers: { "content-type": f.type || "application/octet-stream", "x-dateiname": encodeURIComponent(f.name), "x-unterschrift": encodeURIComponent(text) },
+          body: f
+        }).then(function (r) {
+          return r.json().catch(function () { return {}; }).then(function (d) {
+            if (!r.ok) throw new Error(f.name + ": " + (d.error || "Hochladen hat nicht geklappt."));
+          });
+        }).then(naechste);
+      }
+      naechste().then(function () {
+        hochStatus.textContent = "Hochgeladen ✓";
+        datei.value = "";
+        unterschrift.value = "";
+      }).catch(function (err) {
+        hochStatus.className = "status err";
+        hochStatus.textContent = err.message;
+      }).then(function () {
+        hoch.disabled = false;
+        return bilderLaden();
+      });
+    });
+
     document.getElementById("admin-einstellungen").appendChild(wrap);
+  }
+
+  // Bildmaterial
+  var bilderHinweis = "";
+  function bildUrl(id, download) {
+    return "/api/promo/" + encodeURIComponent(slug) + "/bild/" + encodeURIComponent(id) + (download ? "?download=1" : "");
+  }
+  function bilderZeigen(liste) {
+    var box = document.getElementById("bilder-liste");
+    box.textContent = "";
+    liste.forEach(function (b) {
+      var titel = clean(b.unterschrift) || clean(b.name);
+      var karte = el("figure", { "class": "bild" });
+      var vorschau = el("a", { "class": "vorschau", href: bildUrl(b.id), target: "_blank", rel: "noopener" });
+      vorschau.appendChild(el("img", { src: bildUrl(b.id), alt: titel, loading: "lazy" }));
+      karte.appendChild(vorschau);
+      var info = el("figcaption", { "class": "info" });
+      info.appendChild(el("span", { "class": "titel" }, titel));
+      var aktionen = el("div", { "class": "aktionen" });
+      aktionen.appendChild(el("a", { "class": "btn", href: bildUrl(b.id, true), download: b.name || "" }, "Herunterladen"));
+      if (istAdmin) {
+        var weg = el("button", { type: "button", "class": "btn leise" }, "Löschen");
+        weg.addEventListener("click", function () {
+          if (!window.confirm("„" + titel + "“ wirklich löschen?")) return;
+          weg.disabled = true;
+          fetch("/api/promo/" + encodeURIComponent(slug) + "/bild", {
+            method: "DELETE",
+            credentials: "same-origin",
+            headers: { "content-type": "application/json" },
+            body: JSON.stringify({ id: b.id })
+          }).then(function (r) {
+            if (!r.ok) throw new Error();
+            return bilderLaden();
+          }).catch(function () { weg.disabled = false; window.alert("Löschen hat nicht geklappt."); });
+        });
+        aktionen.appendChild(weg);
+      }
+      info.appendChild(aktionen);
+      karte.appendChild(info);
+      box.appendChild(karte);
+    });
+    var sichtbar = liste.length > 0 || istAdmin || lokal;
+    document.getElementById("bilder").hidden = !sichtbar;
+    document.getElementById("qf-bilder").hidden = !sichtbar;
+    document.getElementById("bilder-leer").hidden = liste.length > 0;
+    bilderHinweis = liste.length ? "" : "Noch kein Bildmaterial hochgeladen – der Bereich ist für Partnerinnen ausgeblendet.";
+  }
+  function bilderLaden() {
+    if (lokal) { bilderZeigen([]); return Promise.resolve(); }
+    return holen("/api/promo/" + encodeURIComponent(slug) + "/bilder").then(function (d) {
+      bilderZeigen(d && Array.isArray(d.bilder) ? d.bilder : []);
+      if (istAdmin) anwenden(aktuell);
+    });
   }
 
   // Kopieren (mit Rückfalllösung für ältere Browser und lokale Dateien)
@@ -722,12 +862,13 @@ KI &amp; Co. Mädelsabend · ab 08.10. · max. 8 Frauen
     var g = document.getElementById("greet-name");
     g.textContent = " ";
     g.appendChild(el("span", { "class": "missing" }, "[Vorname aus inside]"));
-    basisHinweise = ["Lokale Vorschau: Vorname und Einstellungen kommen in inside automatisch dazu."];
+    basisHinweise = ["Lokale Vorschau: Vorname, Einstellungen und Bildmaterial kommen in inside automatisch dazu."];
+    bilderZeigen([]);
     anwenden({});
     return;
   }
 
-  Promise.all([holen("/api/ich"), holen("/api/promo/" + encodeURIComponent(slug))]).then(function (x) {
+  Promise.all([holen("/api/ich"), holen("/api/promo/" + encodeURIComponent(slug)), holen("/api/promo/" + encodeURIComponent(slug) + "/bilder")]).then(function (x) {
     var person = x[0] && x[0].person;
     var e = x[1] || {};
     istAdmin = !!(person && person.ist_admin);
@@ -738,6 +879,7 @@ KI &amp; Co. Mädelsabend · ab 08.10. · max. 8 Frauen
       if (!x[1]) basisHinweise.push("Einstellungen konnten nicht geladen werden – ist die Worker-Erweiterung (/api/promo) eingespielt?");
       einstellungenKasten(e);
     }
+    bilderZeigen(x[2] && Array.isArray(x[2].bilder) ? x[2].bilder : []);
     anwenden(e);
   });
 })();

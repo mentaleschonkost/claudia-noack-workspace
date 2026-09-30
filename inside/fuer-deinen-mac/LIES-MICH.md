@@ -1,27 +1,27 @@
-# Promo-Seiten in inside – einmal einspielen
+# Promo-Seiten in inside – Update „Quickfinder + Bildmaterial“
 
 Alles in diesem Ordner gehört in deinen **inside-Ordner auf dem Mac** (dort, wo `worker.js`
 und der Ordner `public` liegen). Die Login-Logik wird nicht verändert.
 
 ## Schon erledigt (in Supabase)
 
-- Tabelle `ms_promo_einstellungen` angelegt
-- Bereiche angelegt: `promo-maedelsabend`, `promo-signatur`, `promo-hueterin`, `promo-events`
-  (Namen kannst du im Admin ändern; freigeschaltet ist noch niemand)
+- Tabelle `ms_promo_einstellungen` (YouTube-Link, Preis, Gegenleistung)
+- Tabelle `ms_promo_bilder` + privater Speicher `promo-bilder` (Bildmaterial)
+- Bereiche: `promo-maedelsabend`, `promo-signatur`, `promo-hueterin`, `promo-events`
 
 ## Deine 3 Schritte
 
-1. **Kopieren:** Den Inhalt dieses Ordners in deinen inside-Ordner kopieren.
-   - `public/promo-maedelsabend/index.html` landet in deinem (bisher leeren) Ordner
-   - `promo-einspielen.mjs`, `promo-api.js` liegen dann neben `worker.js`
-     (`promo-einstellungen.sql` und diese Datei sind nur zur Dokumentation)
+1. **Kopieren:** Den Inhalt dieses Ordners in deinen inside-Ordner kopieren und die
+   vorhandenen Dateien ersetzen (`promo-api.js`, `promo-einspielen.mjs`,
+   `public/promo-maedelsabend/index.html`).
 
 2. **Einspielen** – im Terminal, im inside-Ordner:
    ```
    node promo-einspielen.mjs
    ```
-   Es erscheint „✓ Promo-Erweiterung eingespielt“. Vorher wird automatisch eine Sicherung
-   `worker.js.vor-promo.bak` angelegt. Passt etwas nicht, bricht das Skript ab und ändert nichts.
+   Beim Update erscheint „✓ Promo-Erweiterung aktualisiert (jetzt mit Bildmaterial)“.
+   Vorher wird automatisch eine Sicherung `worker.js.vor-promo-bilder.bak` angelegt.
+   Passt etwas nicht, bricht das Skript ab und ändert nichts.
 
 3. **Hochladen:**
    ```
@@ -30,17 +30,20 @@ und der Ordner `public` liegen). Die Login-Logik wird nicht verändert.
 
 ## Danach
 
-- Öffne `https://inside.mentale-schonkost.de/promo-maedelsabend/` (als Admin angemeldet).
-- Oben im gelben Kasten: **Einstellungen** – YouTube-Link, Preis, Gegenleistung eintragen, **Speichern**.
-- Partnerin im Admin für `promo-maedelsabend` freischalten – sie wird mit Vornamen begrüßt.
-- Ohne YouTube-Link bleibt der Video-Bereich für Partnerinnen ausgeblendet.
+- Promo-Seite als Admin öffnen → gelber Kasten → **Bildmaterial hochladen**:
+  Grafik(en) auswählen, optional Bildunterschrift („Feed-Post quadratisch“), **Hochladen**.
+- Jede Grafik hat für dich einen **Löschen**-Knopf; Partnerinnen sehen nur **Herunterladen**.
+- Ohne Bilder bleiben „Bildmaterial“ im Quickfinder und der Bereich für Partnerinnen ausgeblendet –
+  genauso wie das Video ohne YouTube-Link.
+- Erlaubt: JPG, PNG, WebP, GIF bis 15 MB pro Bild.
 
-## Zurück zum alten Stand
+## Woran sehe ich, ob es eingespielt ist?
 
-`worker.js.vor-promo.bak` wieder in `worker.js` umbenennen und `npx wrangler deploy`.
+```
+grep -c "promo-bilder" worker.js
+```
+Eine Zahl größer als 0 = eingespielt. Solange es fehlt, erscheint beim Hochladen eine Fehlermeldung.
 
-## Warum nicht Claude direkt deployt hat
+## Zurück zum vorigen Stand
 
-Ein Deploy braucht die vollständige Liste aller inside-Dateien (Login, Start, Admin, Summraum …).
-Die gibt es nur auf deinem Mac – ein Deploy von außen hätte diese Seiten gelöscht, und dein
-nächster eigener Deploy hätte die Erweiterung wieder überschrieben.
+`worker.js.vor-promo-bilder.bak` wieder in `worker.js` umbenennen und `npx wrangler deploy`.
