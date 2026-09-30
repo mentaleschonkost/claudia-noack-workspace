@@ -28,32 +28,76 @@ Bei nur 7 Tagen bis zum Start und einer kalten Zielgruppe (kennt dich noch nicht
 - **Alternative:** Meta „Advantage+ Zielgruppe“ nur mit Ort, Sprache, Geschlecht – Meta sucht dann selbst. Funktioniert oft gut, ist aber weniger steuerbar.
 - **Platzierungen:** Instagram Feed + Stories, Facebook Feed
 
-## 4. Anzeigentexte (Entwurf, aufbauend auf deinen Texten)
+## 4. Anzeigentexte nach Minto (Entwurf, aufbauend auf deinen Texten)
 
 **Wichtig – Meta-Regel:** Anzeigen dürfen niemanden direkt auf persönliche Eigenschaften ansprechen
 (z. B. „Hast du Angst vor Technik?“). Deshalb die Texte unten ohne „Du hast …?“-Fragen.
 Dein Story-Text „KI-Angst? Muss nicht sein.“ ist als *Post* okay, als *Anzeige* könnte er abgelehnt werden.
 
+### Aufbau nach dem Minto-Prinzip (Pyramide)
+
+Jede Anzeige folgt derselben Pyramide:
+
+1. **Kernaussage zuerst** – die erste Zeile muss allein funktionieren (Instagram zeigt nur ca. 125 Zeichen, dann „… mehr“).
+2. **Drei Stützen, sauber getrennt** – *Format* (wie), *Weg* (womit), *Ergebnis* (wofür). Keine Überschneidung, nichts fehlt.
+3. **Leiser Handlungsschritt** – Link, kein Druck.
+
+Die lange Version beginnt mit einem kurzen Einstieg nach Minto (Situation → Hindernis → Antwort), die kurze springt direkt zur Kernaussage.
+
+---
+
+**Variante B – Direkt zum Mädelsabend** (alle Fakten aus deinen Texten)
+
+*Kurz (Instagram):*
+
+> KI nutzen, ohne gut in KI sein zu müssen: Der KI & Co. Mädelsabend startet am 08.10.
+>
+> · Klein und geschützt: 4 Donnerstage online, höchstens 8 Frauen, 2 Einzel-Sessions für jede
+> · Ohne Fachchinesisch: Fragen aus der Runde werden live gelöst – mit Atem und Klang statt Stress
+> · Mit Ergebnis: dein eigener Masterprompt, damit KI endlich nach dir klingt
+>
+> Alle Infos und Anmeldung: mentale-schonkost.de/kicomaedelsabend
+
+*Lang (Facebook):*
+
+> Viele Frauen wissen, dass KI ihnen Arbeit abnehmen könnte. Was bremst, ist die Sorge, etwas falsch zu machen – und Antworten, die nach Einheitsbrei klingen.
+>
+> Deshalb gibt es den KI & Co. Mädelsabend: KI nutzen, ohne gut in KI sein zu müssen. Start am 08.10.
+>
+> · Klein und geschützt: 4 Donnerstage um 19:30 Uhr online, höchstens 8 Frauen, 2 Einzel-Sessions für jede
+> · Ohne Fachchinesisch: Ich übersetze statt Technik zu erklären. Fragen kommen aus der Runde und werden live gelöst – jeder Abend beginnt mit Atem und endet mit Klang.
+> · Mit Ergebnis: Nach 4 Wochen hast du deinen eigenen Masterprompt und weißt, wo KI dir den Alltag leichter macht – und wo du persönliche Daten besser für dich behältst.
+>
+> Alle Infos und Anmeldung: mentale-schonkost.de/kicomaedelsabend
+
+- Überschrift: *KI nutzen, ohne gut in KI sein zu müssen*
+- Beschreibung: *KI & Co. Mädelsabend · ab 08.10. · max. 8 Frauen*
+- Button: „Mehr dazu“
+
+---
+
 **Variante A – Technik-Mut-Check**
 
-> Ich will nicht gut in KI sein. Ich will, dass KI gut für mich ist.
+⚠️ Zum Check selbst habe ich nur den Link, keine Inhalte. Die Stützen unten sind deshalb bewusst allgemein –
+bitte ergänzen oder korrigieren (z. B. Dauer, ob kostenlos, was man am Ende bekommt).
+
+*Kurz (Instagram):*
+
+> Der erste Schritt mit KI muss nicht groß sein: Der Technik-Mut-Check zeigt dir, wo du gerade stehst.
 >
-> Viele Frauen wissen, dass KI ihnen Arbeit abnehmen könnte – und fangen trotzdem nicht an.
-> Der kostenlose Technik-Mut-Check zeigt dir in wenigen Minuten, wo du stehst und was dein nächster kleiner Schritt ist.
+> · Ohne Vorwissen: [was die Teilnehmerin tut – z. B. „ein paar Fragen beantworten“]
+> · Ohne Fachchinesisch: [wie das Ergebnis aussieht]
+> · Mit Richtung: [was sie danach weiß oder bekommt]
+>
+> Zum Check: mentale-schonkost.de/technik-mut-check
 
 - Überschrift: *Wie viel Technik-Mut steckt in dir?* (dein Newsletter-Betreff)
 - Button: „Mehr dazu“
-- Link: mentale-schonkost.de/technik-mut-check
 
-**Variante B – Direkt zum Mädelsabend**
+---
 
-> Ich will nicht gut in KI sein. Ich will, dass KI gut für mich ist.
->
-> KI & Co. Mädelsabend: 4 Donnerstage online, höchstens 8 Frauen, ohne Fachchinesisch – mit Klang und Atem statt Stress. Start am 08.10.
-
-- Überschrift: *KI & Co. Mädelsabend – ab 08.10.*
-- Button: „Mehr dazu“
-- Link: mentale-schonkost.de/kicomaedelsabend
+**Optional: „KI ist weiblich“** – falls das dein Slogan ist, eignet er sich als Überschrift für Variante B:
+*KI ist weiblich. Der KI & Co. Mädelsabend ab 08.10.* (Bitte bestätigen, bevor du ihn nutzt.)
 
 **Bild:** eine deiner Grafiken aus dem Bildmaterial – quadratisch (1080 × 1080) für den Feed, 9:16 (1080 × 1920) für Stories.
 
