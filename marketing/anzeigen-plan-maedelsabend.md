@@ -20,12 +20,34 @@ Bei nur 7 Tagen bis zum Start und einer kalten Zielgruppe (kennt dich noch nicht
 
 ## 3. Zielgruppe
 
-- **Orte:** Deutschland, Österreich, Schweiz
-- **Sprache:** Deutsch
-- **Geschlecht:** Frauen
-- **Alter:** 35–65 *(Annahme – passe es an, wenn du deine Teilnehmerinnen anders kennst)*
-- **Interessen (Auswahl, 3–6 reichen):** Selbstständigkeit, Coaching, Achtsamkeit, Meditation, ChatGPT, Online-Marketing für Solo-Selbstständige
-- **Alternative:** Meta „Advantage+ Zielgruppe“ nur mit Ort, Sprache, Geschlecht – Meta sucht dann selbst. Funktioniert oft gut, ist aber weniger steuerbar.
+### Was über deine Frauen bekannt ist (aus deinen Texten und Listen)
+
+- Frauen, oft **Selbstständige und Einzelkämpferinnen**, die wissen, dass KI ihnen Arbeit abnehmen könnte
+- Bremse: Sorge, etwas falsch zu machen; Unsicherheit beim Datenschutz; KI-Antworten „zu glatt, zu nett“
+- Beim Kennenlern-Abend: Themen vom **Kindergeburtstag** (Familie) bis zur **Coaching-Struktur** (Beruf)
+- Deine bestehende Liste kommt vor allem über **Klang**: Hörprobe Klangpause, Klang-Bio, Pilotstudie, Resonanz-Signatur
+
+### Vermutung – bitte mit deinem Wissen abgleichen
+
+Deine Frauen arbeiten vermutlich in **begleitenden Berufen** (Coaching, Beratung, Therapie, Heilpraxis,
+Körperarbeit, Kreatives) und interessieren sich für **Achtsamkeit, Klang, Meditation, Yoga, Persönlichkeitsentwicklung**.
+
+### Vorschlag: zwei Zielgruppen gegeneinander testen
+
+Gleiche Anzeige, zwei Anzeigengruppen mit je **3,50 €/Tag** (zusammen 7 €). Nach 3 Tagen die schwächere pausieren.
+
+| | Gruppe 1 – „Klang & Achtsamkeit“ | Gruppe 2 – „Selbstständige Frauen“ |
+|---|---|---|
+| Orte / Sprache | DE, AT, CH · Deutsch | DE, AT, CH · Deutsch |
+| Geschlecht / Alter | Frauen · 35–65 | Frauen · 35–65 |
+| Interessen | Achtsamkeit, Meditation, Klangtherapie/Klangschalen, Yoga, Persönlichkeitsentwicklung | Selbstständigkeit, Kleinunternehmen, Coaching, Unternehmerinnen, ChatGPT |
+| Logik | Frauen wie deine jetzige Liste – kennen den „Klang-Teil“ schon | Frauen mit dem Problem aus deinem Koop-Text |
+
+*Meta bietet nicht jedes Interesse genau so an – beim Eintippen zeigt der Werbeanzeigenmanager passende Vorschläge.*
+
+**Nicht sinnvoll (noch):** „Lookalike“ (ähnliche Zielgruppe) aus deiner Liste – dafür braucht Meta mindestens 100 Kontakte.
+Das wird mit dem Technik-Mut-Check wachsen.
+
 - **Platzierungen:** Instagram Feed + Stories, Facebook Feed
 
 ## 4. Anzeigentexte nach Minto (Entwurf, aufbauend auf deinen Texten)
