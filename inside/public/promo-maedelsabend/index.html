@@ -273,6 +273,23 @@
     }
     .missing { background: #FFE9C2; color: #6B4A00; border-radius: 3px; padding: 0 4px; }
     body.review .review-bar { display: block; }
+    .settings {
+      margin-top: 14px; padding: 16px 18px; max-width: 640px;
+      background: #FFFDF6; border: 1px solid rgba(201, 168, 76, 0.6); border-radius: var(--radius-m);
+      color: var(--ink);
+    }
+    .settings h4 { font: 600 0.95rem var(--ff-body); color: var(--petrol-deep); margin-bottom: 10px; }
+    .settings label { display: block; font-size: 0.82rem; font-weight: 500; color: var(--petrol-deep); margin-top: 10px; }
+    .settings input {
+      display: block; width: 100%; margin-top: 4px;
+      font: 0.92rem var(--ff-body); color: var(--ink);
+      padding: 8px 10px; border: 1px solid var(--line); border-radius: var(--radius-s); background: #fff;
+    }
+    .settings input:focus { outline: 2px solid var(--gold); outline-offset: 1px; }
+    .settings .hint { font-size: 0.78rem; color: var(--ink-soft); margin-top: 3px; }
+    .settings .row { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin-top: 14px; }
+    .settings .status { font-size: 0.85rem; }
+    .settings .status.err { color: #9A3412; }
     body.review .draft-badge { display: inline-block; }
 
     @media (max-width: 600px) {
@@ -292,26 +309,20 @@
 ════════════════════════════════════════════════════════════════
   inside.mentale-schonkost.de · Bereich „promo-maedelsabend“
   Ablage:  public/promo-maedelsabend/index.html
-  Der Vorname kommt automatisch aus inside (/api/ich) –
-  für jede Partnerin nur den Zugang im Admin freischalten.
 
-  HIER ANPASSEN – gilt für alle Partnerinnen dieses Projekts
+  • Vorname: kommt automatisch aus inside (/api/ich).
+  • YouTube-Link, Preis, Gegenleistung: stellst du als Admin direkt
+    auf dieser Seite ein (Kasten „Einstellungen“ ganz oben).
+    Ohne YouTube-Link wird der Video-Bereich ausgeblendet.
+  • Prüfhinweise sehen nur Admins – Partnerinnen nie.
 ════════════════════════════════════════════════════════════════
 -->
-<script>
-  const PROMO = {
-    youtubeLink:   "",   // kompletter YouTube-Link, z. B. "https://youtu.be/AbCdEf12345"
-    preis:         "",   // z. B. "147 €" – leer lassen, dann steht dort "siehe Anmeldeseite"
-    gegenleistung: ""    // was Partnerinnen davon haben, z. B. "10 % Provision pro Anmeldung" – leer = Zeile entfällt
-  };
-  // Prüfhinweise („Entwurf“, offene Punkte) sieht nur, wer in inside Admin ist,
-  // oder wer die Datei lokal öffnet. Partnerinnen sehen sie nie.
-</script>
 
 <div class="review-bar" id="review-bar" role="note">
   <strong>Prüfansicht für Claudia</strong> – nur für Admins und in der lokalen Vorschau sichtbar, Partnerinnen sehen diesen Kasten nicht.
   Mit „Entwurf“ markierte Stellen hat Claude formuliert, alles andere stammt aus deinen Texten.
   <ul id="review-list"></ul>
+  <div id="admin-einstellungen"></div>
 </div>
 
 <header class="hero">
@@ -377,7 +388,7 @@
       <h3>Wie du mitmachen kannst</h3>
       <ul class="plain">
         <li><b>Teilen:</b> Ein Post, eine Story oder ein Hinweis in deinem Newsletter. Die Texte findest du weiter unten zum Kopieren.<span class="draft-badge">Entwurf</span></li>
-        <li><b>Video:</b> Die Aufzeichnung vom Kennenlern-Abend findest du gleich hier unten. Das ist ein guter Einstieg, den du einfach weitergeben kannst.<span class="draft-badge">Entwurf</span></li>
+        <li id="mitmachen-video" hidden><b>Video:</b> Die Aufzeichnung vom Kennenlern-Abend findest du gleich hier unten. Das ist ein guter Einstieg, den du einfach weitergeben kannst.<span class="draft-badge">Entwurf</span></li>
         <li><b>Gemeinsamer Abend:</b> Wenn deine Community erst mal reinschnuppern will, machen wir gern einen kostenlosen Mädelsabend exklusiv für sie.</li>
       </ul>
       <p id="gegenleistung-row" hidden><b>Was du davon hast:</b> <span id="gegenleistung"></span></p>
@@ -385,7 +396,7 @@
   </section>
 
   <!-- 2 · Video -->
-  <section id="video">
+  <section id="video" hidden>
     <div class="wrap">
       <p class="kicker">Video</p>
       <h2>Der Prompt-Cocktail: So klingt KI endlich nach dir</h2>
@@ -520,65 +531,144 @@ KI &amp; Co. Mädelsabend · ab 08.10. · max. 8 Frauen
 <script>
 (function () {
   "use strict";
-  var P = (typeof PROMO === "object" && PROMO) ? PROMO : {};
   var clean = function (v) { return typeof v === "string" ? v.trim() : ""; };
-  var preis = clean(P.preis);
-  var gegenleistung = clean(P.gegenleistung);
   var lokal = location.protocol === "file:";
-  var openPoints = [];
+  var slug = (location.pathname.split("/")[1] || "").toLowerCase();
+  var PREIS_REST = " für 4 Wochen, kein Abo. Wer weitermachen will, behält ihren Platz.";
+  var PREIS_LEER = "siehe Anmeldeseite · 4 Wochen, kein Abo. Wer weitermachen will, behält ihren Platz.";
+  var FAQ_VERGUETUNG_LEER = document.getElementById("faq-verguetung").textContent;
+  var istAdmin = false;
+  var basisHinweise = [];
 
-  function missing(label) {
-    var s = document.createElement("span");
-    s.className = "missing";
-    s.textContent = label;
-    return s;
-  }
-
-
-  // Preis
-  if (preis) {
-    document.getElementById("preis-zeile").textContent = preis + " für 4 Wochen, kein Abo. Wer weitermachen will, behält ihren Platz.";
-  } else {
-    openPoints.push("Preis fehlt – auf der Seite steht „siehe Anmeldeseite“ (PROMO.preis).");
-  }
-
-  // Gegenleistung
-  if (gegenleistung) {
-    document.getElementById("gegenleistung").textContent = gegenleistung;
-    document.getElementById("gegenleistung-row").hidden = false;
-    document.getElementById("faq-verguetung").textContent = gegenleistung + ". Wenn du dazu Fragen hast, schreib mir gern.";
-  } else {
-    openPoints.push("Gegenleistung für Partnerinnen ist nicht festgelegt – FAQ 1 verweist auf ein Gespräch (PROMO.gegenleistung).");
+  function el(tag, attrs, text) {
+    var e = document.createElement(tag);
+    Object.keys(attrs || {}).forEach(function (k) { e.setAttribute(k, attrs[k]); });
+    if (text) e.textContent = text;
+    return e;
   }
 
   // YouTube: ID aus dem Link lesen
   function youtubeId(link) {
     var m = clean(link).match(/(?:youtu\.be\/|[?&]v=|\/embed\/|\/shorts\/|\/live\/)([A-Za-z0-9_-]{11})/);
-    if (m) return m[1];
-    return /^[A-Za-z0-9_-]{11}$/.test(clean(link)) ? clean(link) : "";
+    return m ? m[1] : "";
   }
-  var vid = youtubeId(P.youtubeLink);
-  var frame = document.getElementById("video-frame");
-  var consent = document.getElementById("video-consent");
-  var note = document.getElementById("video-note");
 
-  if (vid) {
-    var watchUrl = "https://www.youtube.com/watch?v=" + vid;
-    note.innerHTML = 'Falls das Video hier nicht startet: <a target="_blank" rel="noopener">Video auf YouTube öffnen</a>.';
-    note.firstElementChild.href = watchUrl;
-    document.getElementById("video-load").addEventListener("click", function () {
-      var f = document.createElement("iframe");
-      f.src = "https://www.youtube-nocookie.com/embed/" + vid + "?autoplay=1&rel=0";
-      f.title = "KI & Co. Mädelsabend – Aufzeichnung vom Kennenlern-Abend";
-      f.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
-      f.referrerPolicy = "strict-origin-when-cross-origin";
-      f.allowFullscreen = true;
-      consent.remove();
-      frame.appendChild(f);
+  // Einstellungen auf die Seite anwenden (auch erneut nach dem Speichern)
+  function anwenden(e) {
+    var preis = clean(e.preis), gegenleistung = clean(e.gegenleistung), vid = youtubeId(e.youtube_link);
+
+    document.getElementById("preis-zeile").textContent = preis ? preis + PREIS_REST : PREIS_LEER;
+
+    document.getElementById("gegenleistung").textContent = gegenleistung;
+    document.getElementById("gegenleistung-row").hidden = !gegenleistung;
+    document.getElementById("faq-verguetung").textContent = gegenleistung
+      ? gegenleistung + ". Wenn du dazu Fragen hast, schreib mir gern."
+      : FAQ_VERGUETUNG_LEER;
+
+    var section = document.getElementById("video");
+    var frame = document.getElementById("video-frame");
+    var note = document.getElementById("video-note");
+    document.getElementById("mitmachen-video").hidden = !vid;
+    section.hidden = !vid && !istAdmin && !lokal;
+    frame.textContent = "";
+    note.textContent = "";
+    var box = el("div", { "class": "video-consent" });
+    frame.appendChild(box);
+    if (vid) {
+      var btn = el("button", { type: "button", "class": "btn on-dark" }, "▶ Video hier abspielen");
+      box.appendChild(btn);
+      box.appendChild(el("small", {}, "Beim Abspielen wird eine Verbindung zu YouTube hergestellt."));
+      note.appendChild(document.createTextNode("Falls das Video hier nicht startet: "));
+      note.appendChild(el("a", { href: "https://www.youtube.com/watch?v=" + vid, target: "_blank", rel: "noopener" }, "Video auf YouTube öffnen"));
+      note.appendChild(document.createTextNode("."));
+      btn.addEventListener("click", function () {
+        var f = el("iframe", {
+          src: "https://www.youtube-nocookie.com/embed/" + vid + "?autoplay=1&rel=0",
+          title: "KI & Co. Mädelsabend – Aufzeichnung vom Kennenlern-Abend",
+          allow: "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture",
+          referrerpolicy: "strict-origin-when-cross-origin",
+          allowfullscreen: ""
+        });
+        frame.textContent = "";
+        frame.appendChild(f);
+      });
+    } else {
+      box.appendChild(el("small", {}, "Noch kein Video eingetragen – dieser Bereich ist für Partnerinnen ausgeblendet."));
+    }
+
+    var offen = [];
+    if (!vid) offen.push("Kein YouTube-Link eingetragen – der Video-Bereich ist für Partnerinnen ausgeblendet.");
+    if (!preis) offen.push("Preis fehlt – auf der Seite steht „siehe Anmeldeseite“.");
+    if (!gegenleistung) offen.push("Gegenleistung ist nicht festgelegt – FAQ 1 verweist auf ein Gespräch.");
+    hinweiseZeigen(offen);
+  }
+
+  // Prüfansicht (nur Admin oder lokale Vorschau)
+  function hinweiseZeigen(offen) {
+    if (!istAdmin && !lokal) return;
+    document.body.classList.add("review");
+    var list = document.getElementById("review-list");
+    list.textContent = "";
+    basisHinweise.concat(offen, ["FAQ, Überleitungssätze und zwei angepasste Punkte unter „Wie du mitmachen kannst“ sind Entwürfe – bitte prüfen."]).forEach(function (t) {
+      list.appendChild(el("li", {}, t));
     });
-  } else {
-    openPoints.push("YouTube-Link fehlt (PROMO.youtubeLink).");
-    consent.innerHTML = "<small>Das Video wird hier in Kürze eingebunden.</small>";
+  }
+
+  // Einstellungskasten – wird nur für Admins erzeugt
+  function einstellungenKasten(e) {
+    var wrap = el("div", { "class": "settings", id: "settings" });
+    wrap.appendChild(el("h4", {}, "⚙ Einstellungen für diesen Bereich (" + slug + ")"));
+    var felder = [
+      ["youtube_link", "YouTube-Link", "z. B. https://youtu.be/AbCdEf12345 – leer lassen, wenn es kein Video gibt."],
+      ["preis", "Preis", "z. B. 147 € – leer lassen, dann steht „siehe Anmeldeseite“."],
+      ["gegenleistung", "Gegenleistung für Partnerinnen", "z. B. 10 % Provision pro Anmeldung – leer = Zeile entfällt."]
+    ];
+    var inputs = {};
+    felder.forEach(function (f) {
+      var id = "set-" + f[0];
+      wrap.appendChild(el("label", { "for": id }, f[1]));
+      var i = el("input", { id: id, type: "text", maxlength: "500", autocomplete: "off" });
+      i.value = e[f[0]] || "";
+      inputs[f[0]] = i;
+      wrap.appendChild(i);
+      wrap.appendChild(el("p", { "class": "hint" }, f[2]));
+    });
+    var row = el("div", { "class": "row" });
+    var save = el("button", { type: "button", "class": "btn copy-btn", id: "settings-save" }, "Speichern");
+    var status = el("span", { "class": "status", id: "settings-status", role: "status" });
+    row.appendChild(save);
+    row.appendChild(status);
+    wrap.appendChild(row);
+    save.addEventListener("click", function () {
+      var neu = {};
+      Object.keys(inputs).forEach(function (k) { neu[k] = clean(inputs[k].value); });
+      if (neu.youtube_link && !youtubeId(neu.youtube_link)) {
+        status.className = "status err";
+        status.textContent = "Das sieht nicht wie ein YouTube-Link aus.";
+        return;
+      }
+      save.disabled = true;
+      status.className = "status";
+      status.textContent = "Speichere …";
+      fetch("/api/promo/" + encodeURIComponent(slug), {
+        method: "PUT",
+        credentials: "same-origin",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify(neu)
+      })
+        .then(function (r) { return r.json().catch(function () { return {}; }).then(function (d) { return { ok: r.ok, d: d }; }); })
+        .then(function (x) {
+          if (!x.ok) throw new Error(x.d.error || "Speichern hat nicht geklappt.");
+          anwenden(neu);
+          status.textContent = "Gespeichert ✓ – Partnerinnen sehen die Änderung beim nächsten Laden.";
+        })
+        .catch(function (err) {
+          status.className = "status err";
+          status.textContent = err.message;
+        })
+        .then(function () { save.disabled = false; });
+    });
+    document.getElementById("admin-einstellungen").appendChild(wrap);
   }
 
   // Kopieren (mit Rückfalllösung für ältere Browser und lokale Dateien)
@@ -612,49 +702,44 @@ KI &amp; Co. Mädelsabend · ab 08.10. · max. 8 Frauen
     });
   });
 
-  // Prüfansicht (nur Admin oder lokale Vorschau)
-  function pruefansicht(extra) {
-    document.body.classList.add("review");
-    var list = document.getElementById("review-list");
-    extra.concat(openPoints, ["FAQ, Überleitungssätze und zwei angepasste Punkte unter „Wie du mitmachen kannst“ sind Entwürfe – bitte prüfen."]).forEach(function (t) {
-      var li = document.createElement("li");
-      li.textContent = t;
-      list.appendChild(li);
-    });
-  }
-
   // Begrüßung: Vorname kommt aus inside
   function begruessen(vorname) {
     var greet = document.getElementById("greet-name");
     greet.textContent = "";
     if (!vorname) return;
     greet.appendChild(document.createTextNode(" "));
-    var s = document.createElement("span");
-    s.className = "name";
-    s.textContent = vorname;
-    greet.appendChild(s);
+    greet.appendChild(el("span", { "class": "name" }, vorname));
     document.title = "Für " + vorname + " · KI & Co. Mädelsabend · Claudia Noack";
+  }
+
+  function holen(url) {
+    return fetch(url, { credentials: "same-origin", cache: "no-store" })
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .catch(function () { return null; });
   }
 
   if (lokal) {
     var g = document.getElementById("greet-name");
     g.textContent = " ";
-    g.appendChild(missing("[Vorname aus inside]"));
-    pruefansicht(["Lokale Vorschau: Der Vorname wird in inside automatisch eingesetzt."]);
+    g.appendChild(el("span", { "class": "missing" }, "[Vorname aus inside]"));
+    basisHinweise = ["Lokale Vorschau: Vorname und Einstellungen kommen in inside automatisch dazu."];
+    anwenden({});
     return;
   }
 
-  fetch("/api/ich", { credentials: "same-origin", cache: "no-store" })
-    .then(function (r) { return r.ok ? r.json() : null; })
-    .then(function (d) {
-      var person = d && d.person;
-      begruessen(person ? clean(person.vorname) : "");
-      document.getElementById("back-link").hidden = !person;
-      if (person && person.ist_admin) {
-        pruefansicht(person.vorname ? [] : ["Für dein Konto ist kein Vorname hinterlegt – Partnerinnen ohne Vorname werden mit „Hallo,“ begrüßt."]);
-      }
-    })
-    .catch(function () { begruessen(""); });
+  Promise.all([holen("/api/ich"), holen("/api/promo/" + encodeURIComponent(slug))]).then(function (x) {
+    var person = x[0] && x[0].person;
+    var e = x[1] || {};
+    istAdmin = !!(person && person.ist_admin);
+    begruessen(person ? clean(person.vorname) : "");
+    document.getElementById("back-link").hidden = !person;
+    if (istAdmin) {
+      if (!person.vorname) basisHinweise.push("Für dein Konto ist kein Vorname hinterlegt – Partnerinnen ohne Vorname werden mit „Hallo,“ begrüßt.");
+      if (!x[1]) basisHinweise.push("Einstellungen konnten nicht geladen werden – ist die Worker-Erweiterung (/api/promo) eingespielt?");
+      einstellungenKasten(e);
+    }
+    anwenden(e);
+  });
 })();
 </script>
 </body>
