@@ -89,7 +89,9 @@ am Ende ein Ergebnis und drei kleine erste Schritte, die passen.
 > · Persönlich: dein Ergebnis – vorsichtig, neugierig oder mutig
 > · Machbar: drei kleine erste Schritte, die zu dir passen
 >
-> Zum Technik-Mut-Check: [Link – siehe Hinweis unten]
+> Dein Ergebnis kommt per Mail.
+>
+> Zum Technik-Mut-Check: mentale-schonkost.de/technik-mut-check
 
 *Lang (Facebook):*
 
@@ -103,20 +105,22 @@ am Ende ein Ergebnis und drei kleine erste Schritte, die passen.
 > · Persönlich: dein Ergebnis – vorsichtig, neugierig oder mutig
 > · Machbar: drei kleine erste Schritte, die zu dir passen
 >
-> Zum Technik-Mut-Check: [Link – siehe Hinweis unten]
+> Dein Ergebnis kommt per Mail.
+>
+> Zum Technik-Mut-Check: mentale-schonkost.de/technik-mut-check
 
 - Überschrift: *KI ist weiblich.*
 - Beschreibung: *Technik-Mut-Check · 5 Fragen · 2 Minuten*
 - Button: „Mehr dazu“
 
-**Bitte vor dem Schalten prüfen:**
-1. **Link:** Du hattest mir `mentale-schonkost.de/technik-mut-check` genannt, im Newsletter steht
-   `mentale-schonkost.de/kicomaedelsabend#technikmut`. Welcher ist richtig?
-2. **Drei Ergebnis-Typen:** „vorsichtig, neugierig, mutig“ habe ich aus deinen MailerLite-Gruppen
-   (ki-quiz-vorsichtige / -neugierige / -mutige) abgeleitet – stimmt das so?
-3. **E-Mail-Adresse:** Muss man für das Ergebnis die E-Mail angeben? Wenn ja, sammelt die Anzeige Kontakte
-   für deine Liste (dann in Meta als Ziel „Leads“ statt „Traffic“ überlegen) – und der Anzeigentext sollte das
-   ehrlich andeuten, z. B. „Dein Ergebnis kommt per Mail.“
+**Geklärt:**
+- **Link in der Anzeige:** mentale-schonkost.de/technik-mut-check
+- **Ablauf:** Check → Ergebnis kommt per Mail → Weiterleitung zur Landingpage mentale-schonkost.de/kicomaedelsabend
+- **Ziel in Meta:** „Traffic“ (Klicks auf den Check). Die E-Mail-Adressen sammelt dein Check selbst über MailerLite –
+  dafür brauchst du kein Meta-Leadformular. „Leads“ als Ziel lohnt sich erst mit Meta-Pixel (siehe Abschnitt 6).
+
+**Noch offen:** Heißen die drei Ergebnis-Typen „vorsichtig, neugierig, mutig“? (Abgeleitet aus deinen MailerLite-Gruppen –
+falls nicht, die Zeile „Persönlich: …“ anpassen.)
 
 **Warum diese Variante zum Budget passt:** Ein 2-Minuten-Test ist eine viel kleinere Entscheidung als ein 4-Wochen-Programm.
 Wer den Check macht, landet (falls mit E-Mail) in deinen Quiz-Gruppen – und die bekommen deine Newsletter-Serie zum Mädelsabend.
