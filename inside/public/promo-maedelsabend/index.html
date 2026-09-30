@@ -81,13 +81,15 @@
       padding: 88px 0 120px;
     }
     .hero .waves { bottom: 18px; height: 120px; opacity: 0.35; }
+    .hero .topline { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 8px 20px; margin-bottom: 40px; }
     .hero .brand {
       font-family: var(--ff-display);
       font-size: 1.05rem;
       letter-spacing: 0.08em;
       color: var(--gold-soft);
-      margin-bottom: 40px;
     }
+    .hero .back { font-size: 0.85rem; color: rgba(245, 240, 232, 0.8); }
+    .hero .back:hover { color: var(--gold-soft); }
     .hero h1 {
       font-family: var(--ff-display);
       font-weight: 300;
@@ -288,28 +290,33 @@
 
 <!--
 ════════════════════════════════════════════════════════════════
-  HIER ANPASSEN – pro Partnerin nur dieser Block
+  inside.mentale-schonkost.de · Bereich „promo-maedelsabend“
+  Ablage:  public/promo-maedelsabend/index.html
+  Der Vorname kommt automatisch aus inside (/api/ich) –
+  für jede Partnerin nur den Zugang im Admin freischalten.
+
+  HIER ANPASSEN – gilt für alle Partnerinnen dieses Projekts
 ════════════════════════════════════════════════════════════════
 -->
 <script>
   const PROMO = {
-    vorname:       "",   // z. B. "Anna" – erscheint in der Begrüßung
     youtubeLink:   "",   // kompletter YouTube-Link, z. B. "https://youtu.be/AbCdEf12345"
     preis:         "",   // z. B. "147 €" – leer lassen, dann steht dort "siehe Anmeldeseite"
-    gegenleistung: "",   // was die Partnerin davon hat, z. B. "10 % Provision pro Anmeldung" – leer = Zeile entfällt
-    pruefmodus:    true  // true = gelbe Prüfhinweise sichtbar · vor dem Hochladen auf false setzen
+    gegenleistung: ""    // was Partnerinnen davon haben, z. B. "10 % Provision pro Anmeldung" – leer = Zeile entfällt
   };
+  // Prüfhinweise („Entwurf“, offene Punkte) sieht nur, wer in inside Admin ist,
+  // oder wer die Datei lokal öffnet. Partnerinnen sehen sie nie.
 </script>
 
 <div class="review-bar" id="review-bar" role="note">
-  <strong>Prüfansicht für Claudia</strong> – nur sichtbar, solange <code>pruefmodus: true</code> gesetzt ist.
+  <strong>Prüfansicht für Claudia</strong> – nur für Admins und in der lokalen Vorschau sichtbar, Partnerinnen sehen diesen Kasten nicht.
   Mit „Entwurf“ markierte Stellen hat Claude formuliert, alles andere stammt aus deinen Texten.
   <ul id="review-list"></ul>
 </div>
 
 <header class="hero">
   <div class="wrap">
-    <p class="brand">Claudia Noack · Mentale Schonkost</p>
+    <div class="topline"><p class="brand">Claudia Noack · Mentale Schonkost</p><a class="back" id="back-link" href="/start" hidden>Zu meinen Bereichen</a></div>
     <h1>Hallo<span id="greet-name"></span>,<br>ich freue mich über deine Unterstützung!</h1>
     <p class="lead">Hier findest du alles, was du brauchst, um den KI &amp; Co. Mädelsabend in deiner Community zu teilen: Hintergrund, Video, Links, fertige Texte und Antworten auf die üblichen Fragen.<span class="draft-badge">Entwurf</span></p>
     <ul class="facts" aria-label="Eckdaten auf einen Blick">
@@ -471,7 +478,7 @@ KI &amp; Co. Mädelsabend · ab 08.10. · max. 8 Frauen
 
       <details>
         <summary>Bekomme ich einen eigenen Zugang?<span class="draft-badge">Entwurf</span></summary>
-        <div class="answer"><p>Diese Seite ist dein persönlicher Bereich für die Kooperation. Du erreichst sie über deinen Link und findest hier alle Texte, das Video und die Links an einem Ort.</p></div>
+        <div class="answer"><p>Ja. Diese Seite liegt in meinem internen Bereich unter inside.mentale-schonkost.de. Du meldest dich dort mit deiner E-Mail-Adresse an und bekommst einen Zugangscode per Mail. Danach bleibst du 30 Tage angemeldet und findest hier alle Texte, das Video und die Links an einem Ort.</p></div>
       </details>
 
       <details>
@@ -515,10 +522,9 @@ KI &amp; Co. Mädelsabend · ab 08.10. · max. 8 Frauen
   "use strict";
   var P = (typeof PROMO === "object" && PROMO) ? PROMO : {};
   var clean = function (v) { return typeof v === "string" ? v.trim() : ""; };
-  var vorname = clean(P.vorname);
   var preis = clean(P.preis);
   var gegenleistung = clean(P.gegenleistung);
-  var review = P.pruefmodus !== false;
+  var lokal = location.protocol === "file:";
   var openPoints = [];
 
   function missing(label) {
@@ -528,16 +534,6 @@ KI &amp; Co. Mädelsabend · ab 08.10. · max. 8 Frauen
     return s;
   }
 
-  // Begrüßung
-  var greet = document.getElementById("greet-name");
-  if (vorname) {
-    greet.innerHTML = ' <span class="name"></span>';
-    greet.firstElementChild.textContent = vorname;
-    document.title = "Für " + vorname + " · KI & Co. Mädelsabend · Claudia Noack";
-  } else {
-    openPoints.push("Vorname der Partnerin fehlt (PROMO.vorname).");
-    if (review) { greet.textContent = " "; greet.appendChild(missing("[Vorname]")); }
-  }
 
   // Preis
   if (preis) {
@@ -616,18 +612,49 @@ KI &amp; Co. Mädelsabend · ab 08.10. · max. 8 Frauen
     });
   });
 
-  // Prüfansicht
-  if (review) {
+  // Prüfansicht (nur Admin oder lokale Vorschau)
+  function pruefansicht(extra) {
     document.body.classList.add("review");
-    openPoints.push("FAQ, Überleitungssätze und zwei angepasste Punkte unter „Wie du mitmachen kannst“ sind Entwürfe – bitte prüfen.");
-    openPoints.push("Vor dem Hochladen: pruefmodus auf false setzen.");
     var list = document.getElementById("review-list");
-    openPoints.forEach(function (t) {
+    extra.concat(openPoints, ["FAQ, Überleitungssätze und zwei angepasste Punkte unter „Wie du mitmachen kannst“ sind Entwürfe – bitte prüfen."]).forEach(function (t) {
       var li = document.createElement("li");
       li.textContent = t;
       list.appendChild(li);
     });
   }
+
+  // Begrüßung: Vorname kommt aus inside
+  function begruessen(vorname) {
+    var greet = document.getElementById("greet-name");
+    greet.textContent = "";
+    if (!vorname) return;
+    greet.appendChild(document.createTextNode(" "));
+    var s = document.createElement("span");
+    s.className = "name";
+    s.textContent = vorname;
+    greet.appendChild(s);
+    document.title = "Für " + vorname + " · KI & Co. Mädelsabend · Claudia Noack";
+  }
+
+  if (lokal) {
+    var g = document.getElementById("greet-name");
+    g.textContent = " ";
+    g.appendChild(missing("[Vorname aus inside]"));
+    pruefansicht(["Lokale Vorschau: Der Vorname wird in inside automatisch eingesetzt."]);
+    return;
+  }
+
+  fetch("/api/ich", { credentials: "same-origin", cache: "no-store" })
+    .then(function (r) { return r.ok ? r.json() : null; })
+    .then(function (d) {
+      var person = d && d.person;
+      begruessen(person ? clean(person.vorname) : "");
+      document.getElementById("back-link").hidden = !person;
+      if (person && person.ist_admin) {
+        pruefansicht(person.vorname ? [] : ["Für dein Konto ist kein Vorname hinterlegt – Partnerinnen ohne Vorname werden mit „Hallo,“ begrüßt."]);
+      }
+    })
+    .catch(function () { begruessen(""); });
 })();
 </script>
 </body>
