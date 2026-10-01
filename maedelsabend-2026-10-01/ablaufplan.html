@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Ablaufplan 01.10.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Inter:wght@300;400;500&display=swap">
+<style>
+  /* Layout: Regieblatt – Zeitspalte links, Block rechts, Vortrag als goldene Zeile hervorgehoben. */
+  :root {
+    color-scheme: light;
+    --bg: #F5F0E8; --fg: #173A3E; --soft: #4A6468; --accent: #1F5C63; --gold: #A8862F; --line: rgba(31,92,99,.18); --hl: rgba(201,168,76,.16);
+    --ff-display: 'Cormorant Garamond', 'Iowan Old Style', Palatino, Georgia, serif;
+    --ff-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', system-ui, sans-serif;
+  }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+    --bg: #0F3B40; --fg: #F5F0E8; --soft: #C9D3CF; --accent: #8FC5C9; --gold: #E8C97A; --line: rgba(232,201,122,.25); --hl: rgba(201,168,76,.14); color-scheme: dark; } }
+  :root[data-theme="dark"] { --bg: #0F3B40; --fg: #F5F0E8; --soft: #C9D3CF; --accent: #8FC5C9; --gold: #E8C97A; --line: rgba(232,201,122,.25); --hl: rgba(201,168,76,.14); color-scheme: dark; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--fg); font-family: var(--ff-body); font-size: 16px; line-height: 1.6; }
+  .wrap { max-width: 820px; margin: 0 auto; padding-inline: 20px; padding-block: 48px 64px; display: grid; gap: 28px; }
+  .kicker { font-size: .74rem; letter-spacing: .15em; text-transform: uppercase; color: var(--gold); margin: 0; }
+  h1 { font-family: var(--ff-display); font-weight: 300; font-size: clamp(2rem, 5vw, 3rem); line-height: 1.15; margin: 4px 0 8px; text-wrap: balance; }
+  h1 em { font-style: italic; color: var(--accent); }
+  h2 { font-family: var(--ff-display); font-weight: 400; font-size: 1.6rem; margin: 0 0 8px; }
+  p { margin: 0; max-width: 62ch; }
+  .soft { color: var(--soft); }
+  a { color: var(--accent); }
+  .ablauf { display: grid; border-top: 1px solid var(--line); }
+  .zeile { display: grid; grid-template-columns: 6.5rem 1fr; gap: 16px; padding: 14px 8px; border-bottom: 1px solid var(--line); }
+  .zeile > div { min-width: 0; display: grid; gap: 4px; }
+  .zeit { font-variant-numeric: tabular-nums; font-weight: 500; }
+  .zeit small { display: block; font-weight: 400; color: var(--soft); font-size: .8rem; }
+  .zeile b { font-weight: 500; }
+  .zeile.vortrag { background: var(--hl); border-left: 2px solid var(--gold); }
+  ul { margin: 0; padding-left: 1.1em; }
+  .folien { font-size: .82rem; color: var(--soft); }
+  .check { list-style: none; padding: 0; display: grid; gap: 6px; }
+  .check li::before { content: "☐ "; color: var(--gold); }
+  @media (max-width: 480px) { .zeile { grid-template-columns: 1fr; gap: 4px; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <p class="kicker">KI &amp; Co. Mädelsabend · kostenlos · online</p>
+    <h1>Technikangst <em>auflösen</em>: Ablaufplan</h1>
+    <p class="soft">Donnerstag, 01.10.2026, 19:30 Uhr · Kamera an · Vorschlag für ca. 75 Minuten, Zeiten nach Gefühl anpassen.</p>
+  </header>
+
+  <section class="ablauf" aria-label="Ablauf">
+    <div class="zeile">
+      <span class="zeit">19:30<small>5 min</small></span>
+      <div><b>Ankommen und Begrüßung</b><span class="soft">Kamera-Check, kurze Vorstellungsrunde: Name und ein Wort zu „Technik und ich“.</span><span class="folien">Folie 1</span></div>
+    </div>
+    <div class="zeile">
+      <span class="zeit">19:35<small>5 min</small></span>
+      <div><b>Atem</b><span class="soft">Langsam ein, noch langsamer aus. Im Stressmodus lernt niemand.</span><span class="folien">Folie 2</span></div>
+    </div>
+    <div class="zeile">
+      <span class="zeit">19:40<small>15 min</small></span>
+      <div><b>Sammeln</b><span class="soft">Reihum: Was nervt an der Technik? Wo kommt der Blackout? Du tippst mit, nichts wird bewertet.</span><span class="folien">Folie 3 · Sammelwand</span></div>
+    </div>
+    <div class="zeile vortrag">
+      <span class="zeit">19:55<small>20 min</small></span>
+      <div><b>Vortrag: Zwei Ebenen der Technikangst</b>
+        <ul class="soft">
+          <li>Ebene 1, die Oberfläche: Programme wechseln, Ordnerstruktur im Kopf, alles abstrakt und unsichtbar</li>
+          <li>Zwischenstopp: Arbeitsbedingung, kein Auslöser</li>
+          <li>Ebene 2, darunter: Programme aus der Prägung (beobachtet werden, Versagen, Frau-Mann, Weitergegebenes)</li>
+          <li>Was beim Blackout im Gehirn passiert, was hilft</li>
+        </ul>
+        <span class="folien">Folien 4–15 · Sprechzeiten stehen in den Notizen (Taste N), zusammen 19,5 Minuten</span></div>
+    </div>
+    <div class="zeile">
+      <span class="zeit">20:15<small>15 min</small></span>
+      <div><b>Austausch</b><span class="soft">Zurück zur Sammelwand: Was davon ist Ebene 1, was Ebene 2? Welches Programm kennst du von dir?</span><span class="folien">Folie 16, dann Folie 3</span></div>
+    </div>
+    <div class="zeile">
+      <span class="zeit">20:30<small>5 min</small></span>
+      <div><b>Ausblick</b><span class="soft">KI &amp; Co. Mädelsabend ab 08.10., 4× donnerstags 19:30 Uhr, max. 8 Frauen, 2 Einzel-Sessions, 147 € im ersten Durchgang. Link in den Chat: mentale-schonkost.de/kicomaedelsabend</span><span class="folien">Folie 17</span></div>
+    </div>
+    <div class="zeile">
+      <span class="zeit">20:35<small>5–10 min</small></span>
+      <div><b>Klang zum Abschluss</b><span class="soft">Danach Verabschiedung.</span><span class="folien">Folie 18 · Quellen auf Folie 19</span></div>
+    </div>
+    <div class="zeile">
+      <span class="zeit">ca. 20:45</span>
+      <div><b>Ende</b></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Vorher bereitlegen</h2>
+    <ul class="check">
+      <li>Präsentation im Browser öffnen, F für Vollbild, im Zoom „Bildschirm teilen“</li>
+      <li>Notizen (Taste N) nur auf deinem Bildschirm, falls du ohne Teilen schaust</li>
+      <li>Link mentale-schonkost.de/kicomaedelsabend zum Einfügen in den Chat</li>
+      <li>Klanginstrumente in Reichweite</li>
+    </ul>
+  </section>
+</div>
+</body>
+</html>

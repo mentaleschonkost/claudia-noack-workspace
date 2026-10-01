@@ -1,0 +1,588 @@
+<title>Technikangst auflösen</title>
+<meta name="description" content="Präsentation für den kostenlosen KI &amp; Co. Mädelsabend am 01.10.2026 · Claudia Noack · Mentale Schonkost">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Inter:wght@300;400;500&display=swap">
+<style>
+  /* Layout: eine Folie pro Bildschirm, ruhiges Petrol wie die Mädelsabend-Seite,
+     Studien-Botschaften als goldgerahmte Karte, Klangwelle am unteren Rand.
+     Bewusst ein einziger, dunkler Look (Bildschirmteilen in Zoom). */
+  :root {
+    color-scheme: dark;
+    --petrol-deep: #0F3B40;
+    --petrol:      #1F5C63;
+    --petrol-soft: #2E7A80;
+    --gold:        #C9A84C;
+    --gold-soft:   #E8C97A;
+    --creme:       #F5F0E8;
+    --creme-dim:   #C9D3CF;
+    --line:        rgba(232, 201, 122, 0.28);
+    --card:        rgba(15, 59, 64, 0.55);
+    --ff-display: 'Cormorant Garamond', 'Iowan Old Style', Palatino, Georgia, serif;
+    --ff-body:    'Inter', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', system-ui, sans-serif;
+  }
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { height: 100%; }
+  body {
+    margin: 0;
+    background: var(--petrol-deep);
+    color: var(--creme);
+    font-family: var(--ff-body);
+    font-size: clamp(15px, 1.15vw + 8px, 21px);
+    line-height: 1.55;
+    overflow: hidden;
+  }
+  a { color: var(--gold-soft); text-underline-offset: 3px; }
+  a:focus-visible, button:focus-visible, input:focus-visible { outline: 2px solid var(--gold-soft); outline-offset: 3px; border-radius: 4px; }
+
+  /* ─── Bühne ─────────────────────────────────────────── */
+  .deck { position: relative; height: 100%; background: linear-gradient(170deg, var(--petrol-deep) 0%, var(--petrol) 100%); }
+  .slide {
+    position: absolute; inset: 0;
+    padding-block: clamp(28px, 6vh, 72px) clamp(90px, 14vh, 130px);
+    padding-inline: max(16px, 7vw);
+    overflow-y: auto;
+    display: flex; flex-direction: column; justify-content: center; gap: 1.1em;
+    opacity: 0; visibility: hidden;
+    transition: opacity .45s ease, visibility 0s linear .45s;
+  }
+  .slide.aktiv { opacity: 1; visibility: visible; transition: opacity .45s ease; }
+  .slide > * { max-width: 1100px; min-width: 0; }
+
+  .kicker { font-size: .72em; font-weight: 500; letter-spacing: .16em; text-transform: uppercase; color: var(--gold-soft); margin: 0; }
+  h1, h2 { font-family: var(--ff-display); font-weight: 300; line-height: 1.12; margin: 0; text-wrap: balance; }
+  h1 { font-size: clamp(2.4rem, 6vw, 5rem); }
+  h2 { font-size: clamp(1.9rem, 4vw, 3.4rem); }
+  h1 em, h2 em { color: var(--gold-soft); font-style: italic; }
+  p { margin: 0; max-width: 46em; }
+  .lead { font-size: 1.15em; color: var(--creme); }
+  .leise { color: var(--creme-dim); }
+
+  ul.punkte { margin: 0; padding: 0; list-style: none; display: grid; gap: .55em; }
+  ul.punkte li { padding-left: 1.3em; position: relative; }
+  ul.punkte li::before { content: ""; position: absolute; left: 0; top: .62em; width: .5em; height: 1px; background: var(--gold); }
+
+  /* Studien-Botschaft */
+  .botschaft {
+    border: 1px solid var(--line); border-radius: 14px; background: var(--card);
+    padding: .9em 1.2em 1em; display: grid; gap: .35em;
+  }
+  .botschaft .label { font-size: .66em; letter-spacing: .16em; text-transform: uppercase; color: var(--gold); }
+  .botschaft .satz { font-family: var(--ff-display); font-size: 1.45em; line-height: 1.25; }
+  .botschaft .quelle { font-size: .72em; color: var(--creme-dim); }
+  .reihe { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 22em), 1fr)); gap: 1em; }
+
+  /* Zwei Ebenen */
+  .ebenen { display: grid; gap: .8em; }
+  .ebene { border-radius: 14px; padding: 1em 1.2em; display: grid; gap: .3em; }
+  .ebene.oben { border: 1px solid var(--line); }
+  .ebene.unten { background: rgba(201, 168, 76, 0.14); border: 1px solid var(--gold); }
+  .ebene .titel { font-family: var(--ff-display); font-size: 1.5em; }
+  .ebene .titel small { font-family: var(--ff-body); font-size: .5em; letter-spacing: .14em; text-transform: uppercase; color: var(--gold-soft); margin-right: .6em; }
+
+  /* Zahl */
+  .zahlen { display: flex; flex-wrap: wrap; gap: 1.2em 2.4em; align-items: baseline; }
+  .zahl { display: grid; }
+  .zahl b { font-family: var(--ff-display); font-weight: 300; font-size: clamp(2.6rem, 6vw, 4.6rem); line-height: 1; color: var(--gold-soft); font-variant-numeric: tabular-nums; }
+  .zahl span { font-size: .8em; color: var(--creme-dim); }
+
+  /* Sammelwand */
+  .wand { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 20em), 1fr)); gap: 1em; }
+  .spalte { border: 1px solid var(--line); border-radius: 14px; padding: .9em 1em; display: grid; gap: .7em; align-content: start; min-width: 0; }
+  .spalte h3 { font-family: var(--ff-display); font-weight: 400; font-size: 1.45em; margin: 0; }
+  .spalte form { display: flex; gap: .5em; }
+  .spalte input {
+    flex: 1; min-width: 0; font: inherit; font-size: .85em; color: var(--creme);
+    background: rgba(245, 240, 232, 0.07); border: 1px solid var(--line); border-radius: 8px; padding: .5em .7em;
+  }
+  .spalte input::placeholder { color: var(--creme-dim); }
+  button {
+    font: inherit; font-size: .8em; cursor: pointer; color: var(--petrol-deep); background: var(--gold-soft);
+    border: 1px solid var(--gold-soft); border-radius: 999px; padding: .45em 1em;
+  }
+  button.zart { background: transparent; color: var(--creme-dim); border-color: var(--line); }
+  .zettel { display: flex; flex-wrap: wrap; gap: .5em; }
+  .zettel li {
+    list-style: none; background: var(--creme); color: var(--petrol-deep); border-radius: 6px;
+    padding: .35em .7em; font-size: .85em; display: inline-flex; gap: .5em; align-items: center; max-width: 100%;
+    overflow-wrap: anywhere;
+  }
+  .zettel li button { padding: 0 .35em; font-size: .9em; background: transparent; border: 0; color: var(--petrol-soft); }
+  .zettel:empty::before { content: attr(data-leer); color: var(--creme-dim); font-size: .85em; }
+  .zettel { margin: 0; padding: 0; }
+
+  /* Quellen */
+  ol.quellen { margin: 0; padding-left: 1.4em; font-size: .7em; columns: 2 26em; column-gap: 2.5em; color: var(--creme-dim); }
+  ol.quellen li { break-inside: avoid; margin-bottom: .45em; }
+
+  /* Klangwelle */
+  .welle { position: absolute; left: 0; right: 0; bottom: 34px; height: 70px; width: 100%; pointer-events: none; opacity: .35; }
+  .welle path { fill: none; stroke: var(--gold); stroke-linecap: round; }
+  .welle g { transform-origin: 50% 50%; animation: atmen 12s ease-in-out infinite; }
+  .welle g:nth-child(2) { animation-duration: 17s; animation-delay: -5s; }
+  @keyframes atmen { 0%, 100% { transform: scaleY(1); } 50% { transform: scaleY(.6); } }
+  @media (prefers-reduced-motion: reduce) { .welle g { animation: none; } .slide { transition: none; } }
+
+  /* Leiste unten */
+  .leiste {
+    position: absolute; left: 0; right: 0; bottom: 0;
+    padding: 8px max(16px, 3vw) calc(8px + env(safe-area-inset-bottom, 0px));
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    font-size: .7em; color: var(--creme-dim);
+  }
+  .leiste .marke { font-family: var(--ff-display); font-size: 1.25em; color: var(--gold-soft); letter-spacing: .06em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .leiste .steuer { display: flex; gap: 8px; align-items: center; }
+  .leiste button { font-size: 1em; padding: .3em .8em; background: transparent; color: var(--creme); border-color: var(--line); }
+  .zaehler { font-variant-numeric: tabular-nums; min-width: 4.5em; text-align: center; }
+  .fortschritt { position: absolute; left: 0; bottom: 0; height: 2px; background: var(--gold); transition: width .3s ease; }
+
+  /* Notizen für Claudia (Taste N) */
+  .notiz { display: none; }
+  body.notizen .notiz {
+    display: block; border-left: 2px solid var(--gold); padding: .5em .9em; font-size: .72em;
+    color: var(--creme-dim); background: rgba(0,0,0,.18); border-radius: 0 8px 8px 0;
+  }
+  .notiz b { color: var(--gold-soft); font-weight: 500; }
+  .block-hinweis { font-size: .66em; letter-spacing: .14em; text-transform: uppercase; color: var(--creme-dim); }
+  .hilfe { position: absolute; top: calc(10px + env(safe-area-inset-top, 0px)); right: 16px; font-size: .62em; color: var(--creme-dim); opacity: .7; }
+
+  @media (max-width: 560px) {
+    .slide { justify-content: flex-start; }
+    .leiste .marke { display: none; }
+    .hilfe { display: none; }
+  }
+</style>
+
+<div class="deck" id="deck">
+
+  <!-- 1 · Titel -->
+  <section class="slide" data-min="0.5" data-teil="vortrag">
+    <p class="kicker">KI &amp; Co. Mädelsabend · Donnerstag, 01.10.2026</p>
+    <h1>Technikangst <em>auflösen</em></h1>
+    <p class="lead leise">Was an der Technik nervt, wo der Blackout kommt und was wirklich dahintersteckt.</p>
+    <p class="leise">Claudia Noack · Mentale Schonkost</p>
+    <div class="notiz"><b>0,5 min.</b> Kurz begrüßen, dann direkt in den Atem.</div>
+  </section>
+
+  <!-- 2 · Atem -->
+  <section class="slide" data-min="0" data-teil="block">
+    <p class="block-hinweis">Ankommen · eigener Programmpunkt</p>
+    <h2>Erst mal <em>ankommen</em></h2>
+    <p class="lead">Langsam ein, noch langsamer aus. Wir lernen nicht im Stressmodus.</p>
+    <div class="botschaft">
+      <span class="label">Was Studien zeigen</span>
+      <span class="satz">Langsames Atmen, weniger als 10 Atemzüge pro Minute, geht mit mehr Ruhe und weniger Angst und Anspannung einher.</span>
+      <span class="quelle">Zaccaro et al. (2018), systematischer Review von 15 Studien, Frontiers in Human Neuroscience. <a href="https://www.frontiersin.org/journals/human-neuroscience/articles/10.3389/fnhum.2018.00353/full" target="_blank" rel="noopener">Quelle</a></span>
+    </div>
+    <div class="notiz"><b>Ca. 5 min, außerhalb der 20 Minuten.</b> Atemübung wie gewohnt.</div>
+  </section>
+
+  <!-- 3 · Sammeln -->
+  <section class="slide" data-min="0" data-teil="block">
+    <p class="block-hinweis">Sammeln · eigener Programmpunkt</p>
+    <h2>Was nervt? Wo kommt der <em>Blackout</em>?</h2>
+    <div class="wand">
+      <div class="spalte">
+        <h3>Was nervt an der Technik?</h3>
+        <form data-liste="nervt">
+          <label class="sr" for="eingabe-nervt" hidden>Was nervt</label>
+          <input id="eingabe-nervt" type="text" placeholder="Stichwort eintippen, Enter" autocomplete="off">
+          <button type="submit">Dazu</button>
+        </form>
+        <ul class="zettel" id="liste-nervt" data-leer="Hier landen eure Stichworte."></ul>
+      </div>
+      <div class="spalte">
+        <h3>Wo kommt der Blackout?</h3>
+        <form data-liste="blackout">
+          <label class="sr" for="eingabe-blackout" hidden>Wo kommt der Blackout</label>
+          <input id="eingabe-blackout" type="text" placeholder="Situation eintippen, Enter" autocomplete="off">
+          <button type="submit">Dazu</button>
+        </form>
+        <ul class="zettel" id="liste-blackout" data-leer="Hier landen die Momente, in denen nichts mehr geht."></ul>
+      </div>
+    </div>
+    <div class="reihe">
+      <div class="botschaft">
+        <span class="label">Was Studien zeigen</span>
+        <span class="satz">Gefühle in Worte fassen dämpft die Reaktion des Angstzentrums im Gehirn.</span>
+        <span class="quelle">Lieberman et al. (2007), Psychological Science 18. <a href="https://sanlab.psych.ucla.edu/wp-content/uploads/sites/31/2015/05/Lieberman_AL-2007.pdf" target="_blank" rel="noopener">Quelle</a></span>
+      </div>
+      <div class="botschaft">
+        <span class="label">Was Studien zeigen</span>
+        <span class="satz">10 Minuten über die eigenen Sorgen schreiben, direkt vor einer Prüfung, verbesserte die Ergebnisse, vor allem bei ängstlichen Studierenden.</span>
+        <span class="quelle">Ramirez &amp; Beilock (2011), Science 331. <a href="https://www.science.org/doi/10.1126/science.1199427" target="_blank" rel="noopener">Quelle</a></span>
+      </div>
+    </div>
+    <p class="leise" style="font-size:.7em"><button type="button" class="zart" id="wand-leeren">Sammelwand leeren</button> <span id="leeren-frage" hidden>Wirklich alles löschen? <button type="button" id="leeren-ja">Ja, leeren</button> <button type="button" class="zart" id="leeren-nein">Nein</button></span></p>
+    <div class="notiz"><b>Ca. 15 min, außerhalb der 20 Minuten.</b> Reihum sammeln, du tippst mit. Nichts bewerten, nur aufschreiben. Die Wand bleibt in deinem Browser gespeichert, bis du sie leerst.</div>
+  </section>
+
+  <!-- 4 · Zwei Ebenen -->
+  <section class="slide" data-min="1.5" data-teil="vortrag">
+    <p class="kicker">Der Vortrag · 20 Minuten</p>
+    <h2>Technikangst hat <em>zwei Ebenen</em></h2>
+    <div class="ebenen">
+      <div class="ebene oben">
+        <span class="titel"><small>Ebene 1</small>Die Oberfläche</span>
+        <span class="leise">Wie Computerarbeit gebaut ist: Programme wechseln, Ordner im Kopf behalten, alles abstrakt.</span>
+      </div>
+      <div class="ebene unten">
+        <span class="titel"><small>Ebene 2</small>Darunter</span>
+        <span>Programme aus unserer Prägung: Versagen, beobachtet werden, Frau-Mann-Themen.</span>
+      </div>
+    </div>
+    <div class="notiz"><b>1,5 min.</b> Auf die Sammelwand zeigen: Vieles davon gehört zu Ebene 1. Der Blackout selbst kommt meist aus Ebene 2.</div>
+  </section>
+
+  <!-- 5 · Programme wechseln -->
+  <section class="slide" data-min="1.5" data-teil="vortrag">
+    <p class="kicker">Ebene 1 · Die Oberfläche</p>
+    <h2>Zwischen Programmen <em>wechseln</em> ermüdet</h2>
+    <p class="lead">Mail, Browser, Ordner, Textprogramm, wieder zurück. Jeder Wechsel heißt: Ziel umstellen, andere Regeln einschalten. Ich merke das selbst, meine Konzentration hat Grenzen.</p>
+    <div class="reihe">
+      <div class="botschaft">
+        <span class="label">Was Studien zeigen</span>
+        <span class="satz">Jeder Aufgabenwechsel kostet Zeit. Bei komplexen und ungewohnten Aufgaben kostet er mehr.</span>
+        <span class="quelle">Rubinstein, Meyer &amp; Evans (2001), Journal of Experimental Psychology: Human Perception and Performance 27. <a href="https://doi.org/10.1037/0096-1523.27.4.763" target="_blank" rel="noopener">Quelle</a></span>
+      </div>
+      <div class="botschaft">
+        <span class="label">Was Studien zeigen</span>
+        <span class="satz">Wer unterbrochen wird, arbeitet schneller weiter und zahlt dafür mit mehr Stress, Frust und Zeitdruck.</span>
+        <span class="quelle">Mark, Gudith &amp; Klocke (2008), CHI-Konferenz. <a href="https://dl.acm.org/doi/10.1145/1357054.1357072" target="_blank" rel="noopener">Quelle</a></span>
+      </div>
+    </div>
+    <div class="notiz"><b>1,5 min.</b> Die Müdigkeit ist keine Schwäche, sie ist messbar.</div>
+  </section>
+
+  <!-- 6 · Dateistruktur im Kopf -->
+  <section class="slide" data-min="2" data-teil="vortrag">
+    <p class="kicker">Ebene 1 · Die Oberfläche</p>
+    <h2>Die <em>Ordnerstruktur</em> tragen wir im Kopf</h2>
+    <p class="lead">Wo lag die Datei? In welchem Ordner, in welchem Unterordner, unter welchem Namen? Kaum jemandem ist bewusst, wie viel Energie es zieht, diese Landkarte ständig im Kopf zu halten.</p>
+    <div class="reihe">
+      <div class="botschaft">
+        <span class="label">Was Studien zeigen</span>
+        <span class="satz">Unser Kurzzeitgedächtnis hält im Schnitt nur etwa vier Einheiten gleichzeitig.</span>
+        <span class="quelle">Cowan (2001), Behavioral and Brain Sciences 24. <a href="https://doi.org/10.1017/S0140525X01003922" target="_blank" rel="noopener">Quelle</a></span>
+      </div>
+      <div class="botschaft">
+        <span class="label">Was Studien zeigen</span>
+        <span class="satz">Was wir nach außen auslagern, auf Papier, in Listen, in Geräte, entlastet den Kopf.</span>
+        <span class="quelle">Risko &amp; Gilbert (2016), „Cognitive Offloading“, Trends in Cognitive Sciences 20. <a href="https://doi.org/10.1016/j.tics.2016.07.002" target="_blank" rel="noopener">Quelle</a></span>
+      </div>
+    </div>
+    <div class="notiz"><b>2 min.</b> Vier Einheiten: Ordner, Unterordner, Dateiname, Programm. Damit ist der Kopf schon voll, bevor die eigentliche Arbeit beginnt.</div>
+  </section>
+
+  <!-- 7 · Alles im Kopf -->
+  <section class="slide" data-min="2" data-teil="vortrag">
+    <p class="kicker">Ebene 1 · Die Oberfläche</p>
+    <h2>Am Computer passiert alles <em>im Kopf</em></h2>
+    <p class="lead">Wir lernen, weil wir Dinge sehen, anfassen und eine Reaktion bekommen. Computerarbeit spielt sich fast nur im Kopf ab. Und der Teil, der sichtbar ist, verlangt viel logisches Verständnis.</p>
+    <p class="leise">Das abstrakte Denken wird dabei stark beansprucht. Es ist uns nicht unbedingt in die Wiege gelegt.</p>
+    <div class="botschaft">
+      <span class="label">Was Studien zeigen</span>
+      <span class="satz">Räumliches Vorstellungsvermögen lässt sich trainieren. Der Effekt hält an und überträgt sich auf andere Aufgaben.</span>
+      <span class="quelle">Uttal et al. (2013), Meta-Analyse von 217 Studien, Psychological Bulletin 139. <a href="https://doi.org/10.1037/a0028446" target="_blank" rel="noopener">Quelle</a></span>
+    </div>
+    <div class="notiz"><b>2 min.</b> Die Botschaft: Ob angeboren oder nicht, es ist lernbar. Und es darf sichtbar und anfassbar werden.</div>
+  </section>
+
+  <!-- 8 · Zwischenfazit -->
+  <section class="slide" data-min="1" data-teil="vortrag">
+    <p class="kicker">Zwischenstopp</p>
+    <h2>Das ist anstrengend. <em>Aber</em> es löst noch keinen Blackout aus.</h2>
+    <p class="lead">Programme wechseln, Ordner im Kopf, abstraktes Denken: Das sind Arbeitsbedingungen. Wir haben gelernt, uns daran anzupassen.</p>
+    <p class="lead">Den Stress löst etwas anderes aus.</p>
+    <div class="notiz"><b>1 min.</b> Pause lassen. Dann die Frage: Was passiert in dir, kurz bevor nichts mehr geht?</div>
+  </section>
+
+  <!-- 9 · Ebene 2 Überblick -->
+  <section class="slide" data-min="1" data-teil="vortrag">
+    <p class="kicker">Ebene 2 · Darunter</p>
+    <h2>Programme, die aus unserer <em>Prägung</em> laufen</h2>
+    <ul class="punkte lead">
+      <li>Ich darf nicht versagen.</li>
+      <li>Jemand schaut mir zu und bewertet mich.</li>
+      <li>Technik ist Männersache.</li>
+      <li>… und vieles mehr, was wir mitgebracht haben.</li>
+    </ul>
+    <div class="notiz"><b>1 min.</b> Diese Programme laufen leise im Hintergrund. Die nächsten Folien zeigen, was die Forschung dazu sagt.</div>
+  </section>
+
+  <!-- 10 · Beobachtet werden -->
+  <section class="slide" data-min="2" data-teil="vortrag">
+    <p class="kicker">Ebene 2 · Beobachtet werden</p>
+    <h2>Bewertet werden <em>und</em> keine Kontrolle haben</h2>
+    <p class="lead">Jemand steht hinter dir und schaut zu. Der Rechner macht, was er will. Genau diese Mischung ist der stärkste Stressauslöser.</p>
+    <div class="botschaft">
+      <span class="label">Was Studien zeigen</span>
+      <span class="satz">Aufgaben mit Bewertung durch andere und ohne Kontrolle über den Ausgang lösten die stärkste Stresshormon-Reaktion aus, mit der längsten Erholungszeit.</span>
+      <span class="quelle">Dickerson &amp; Kemeny (2004), Meta-Analyse von 208 Studien, Psychological Bulletin 130. <a href="https://doi.org/10.1037/0033-2909.130.3.355" target="_blank" rel="noopener">Quelle</a></span>
+    </div>
+    <div class="notiz"><b>2 min.</b> Darum ist eine kleine, geschützte Runde kein Luxus.</div>
+  </section>
+
+  <!-- 11 · Versagen -->
+  <section class="slide" data-min="2" data-teil="vortrag">
+    <p class="kicker">Ebene 2 · Versagen</p>
+    <h2>Wenn es nicht klappt: <em>Wer ist schuld?</em></h2>
+    <p class="lead">Ein Experiment aus Heidelberg: Ein präparierter USB-Stick ließ die Computeraufgabe scheitern. Vorher hörte ein Teil der Gruppe: Männer schneiden hier meist besser ab.</p>
+    <div class="botschaft">
+      <span class="label">Was Studien zeigen</span>
+      <span class="satz">Nach diesem Hinweis suchten Frauen den Fehler eher bei sich, Männer eher bei der Technik. Ohne den Hinweis gab es keinen Unterschied.</span>
+      <span class="quelle">Koch, Müller &amp; Sieverding (2008), Computers &amp; Education 51. <a href="https://archiv.ub.uni-heidelberg.de/volltextserver/19328/1/Koch-M%C3%BCller-Sieverding_women_computers_2008.pdf" target="_blank" rel="noopener">Quelle</a></span>
+    </div>
+    <div class="notiz"><b>2 min.</b> Der Stick war kaputt, nicht die Frauen. Das Klischee hat die Deutung gemacht.</div>
+  </section>
+
+  <!-- 12 · Frau-Mann -->
+  <section class="slide" data-min="2" data-teil="vortrag">
+    <p class="kicker">Ebene 2 · Frau-Mann</p>
+    <h2>Gleich gut, aber <em>weniger zugetraut</em></h2>
+    <div class="zahlen">
+      <div class="zahl"><b>37 %</b><span>der Frauen nutzen KI</span></div>
+      <div class="zahl"><b>53 %</b><span>der Männer nutzen KI</span></div>
+    </div>
+    <p class="leise" style="font-size:.72em">Initiative D21 &amp; IAB, Digital Gender Gap 2026, 4.806 Befragte von 14 bis 69 Jahren. <a href="https://initiatived21.de/presse/gender-ai-gap-von-16-prozentpunkten-frauen-nutzen-ki-deutlich-seltener-als-maenner" target="_blank" rel="noopener">Quelle</a></p>
+    <div class="reihe">
+      <div class="botschaft">
+        <span class="label">Was Studien zeigen</span>
+        <span class="satz">Frauen und Männer unterscheiden sich kaum in ihren tatsächlichen Online-Fähigkeiten. Frauen schätzen sich aber deutlich schlechter ein.</span>
+        <span class="quelle">Hargittai &amp; Shafer (2006), Social Science Quarterly 87. <a href="https://doi.org/10.1111/j.1540-6237.2006.00389.x" target="_blank" rel="noopener">Quelle</a></span>
+      </div>
+      <div class="botschaft">
+        <span class="label">Was Studien zeigen</span>
+        <span class="satz">Wer an das Klischee erinnert wird, kann in schwierigen Aufgaben schlechter abschneiden. Der Effekt ist echt, aber kleiner als lange angenommen.</span>
+        <span class="quelle">Spencer, Steele &amp; Quinn (1999), <a href="https://doi.org/10.1006/jesp.1998.1373" target="_blank" rel="noopener">Quelle</a> · Einordnung: Flore &amp; Wicherts (2015), <a href="https://doi.org/10.1016/j.jsp.2014.10.002" target="_blank" rel="noopener">Quelle</a></span>
+      </div>
+    </div>
+    <div class="notiz"><b>2 min.</b> Die Lücke liegt im Zutrauen, nicht im Können. Eine Meta-Analyse über 20 Jahre (Cai, Fan &amp; Du 2017) zeigt: Bei Gefühl und Selbstwirksamkeit ist die Lücke kleiner geworden, bei den Überzeugungen kaum.</div>
+  </section>
+
+  <!-- 13 · Weitergegeben -->
+  <section class="slide" data-min="1" data-teil="vortrag">
+    <p class="kicker">Ebene 2 · Prägung</p>
+    <h2>Angst wird <em>weitergegeben</em></h2>
+    <div class="botschaft">
+      <span class="label">Was Studien zeigen</span>
+      <span class="satz">Je mehr Mathe-Angst Grundschullehrerinnen hatten, desto eher glaubten ihre Schülerinnen am Ende des Schuljahres „Jungs können Mathe, Mädchen lesen“, und desto schwächer waren ihre Mathe-Leistungen. Bei Jungen nicht.</span>
+      <span class="quelle">Beilock, Gunderson, Ramirez &amp; Levine (2010), PNAS 107. <a href="https://doi.org/10.1073/pnas.0910967107" target="_blank" rel="noopener">Quelle</a></span>
+    </div>
+    <div class="notiz"><b>1 min.</b> Wir haben diese Programme nicht erfunden. Wir haben sie übernommen. Und was übernommen ist, darf man auch wieder ablegen.</div>
+  </section>
+
+  <!-- 14 · Blackout im Gehirn -->
+  <section class="slide" data-min="1.5" data-teil="vortrag">
+    <p class="kicker">Was beim Blackout passiert</p>
+    <h2>Stress schaltet das <em>Denkhirn</em> leiser</h2>
+    <div class="reihe">
+      <div class="botschaft">
+        <span class="label">Was Studien zeigen</span>
+        <span class="satz">Schon leichter, unkontrollierbarer Stress kann die Fähigkeiten des präfrontalen Kortex, unseres Planungs- und Denkzentrums, schnell und stark einschränken.</span>
+        <span class="quelle">Arnsten (2009), Nature Reviews Neuroscience 10. <a href="https://www.nature.com/articles/nrn2648" target="_blank" rel="noopener">Quelle</a></span>
+      </div>
+      <div class="botschaft">
+        <span class="label">Was Studien zeigen</span>
+        <span class="satz">Angst belegt das Arbeitsgedächtnis. Die Aufmerksamkeit springt zu dem, was bedrohlich wirkt, statt bei der Aufgabe zu bleiben.</span>
+        <span class="quelle">Eysenck, Derakshan, Santos &amp; Calvo (2007), Emotion 7. <a href="https://doi.org/10.1037/1528-3542.7.2.336" target="_blank" rel="noopener">Quelle</a></span>
+      </div>
+    </div>
+    <div class="notiz"><b>1,5 min.</b> Der Blackout ist kein Zeichen von Dummheit. Er ist eine Stressreaktion. Ebene 1 füllt den Kopf, Ebene 2 drückt auf den Knopf.</div>
+  </section>
+
+  <!-- 15 · Was hilft -->
+  <section class="slide" data-min="1.5" data-teil="vortrag">
+    <p class="kicker">Was das für uns heißt</p>
+    <h2>Was <em>hilft</em></h2>
+    <ul class="punkte lead">
+      <li><b>Benennen und aufschreiben.</b> Das haben wir vorhin an der Sammelwand gemacht. <span class="leise">(Lieberman 2007, Ramirez &amp; Beilock 2011)</span></li>
+      <li><b>Langsam atmen.</b> Bevor es losgeht und wenn es eng wird. <span class="leise">(Zaccaro 2018)</span></li>
+      <li><b>Den Kopf entlasten.</b> Aufschreiben, sichtbar machen, auslagern. <span class="leise">(Risko &amp; Gilbert 2016)</span></li>
+      <li><b>Ohne Bewertung üben.</b> Kleine Runde, eigenes Tempo. <span class="leise">(abgeleitet aus Dickerson &amp; Kemeny 2004)</span></li>
+      <li><b>Dranbleiben.</b> Abstraktes Denken ist trainierbar. <span class="leise">(Uttal 2013)</span></li>
+    </ul>
+    <div class="notiz"><b>1,5 min.</b> Und KI? Mit KI sagst du in Ruhe, was du willst, statt dich durch Menüs zu kämpfen.</div>
+  </section>
+
+  <!-- 16 · Austausch -->
+  <section class="slide" data-min="0" data-teil="block">
+    <p class="block-hinweis">Austausch · eigener Programmpunkt</p>
+    <h2>Welches <em>Programm</em> kennst du von dir?</h2>
+    <p class="lead">Schau noch mal auf die Sammelwand. Was davon ist Ebene 1, was Ebene 2?</p>
+    <div class="notiz"><b>Ca. 15 min, außerhalb der 20 Minuten.</b> Zurück zur Sammelwand blättern (Pfeil links) und gemeinsam zuordnen.</div>
+  </section>
+
+  <!-- 17 · Ausblick -->
+  <section class="slide" data-min="0" data-teil="block">
+    <p class="block-hinweis">Ausblick · eigener Programmpunkt</p>
+    <h2>Wie es <em>weitergeht</em></h2>
+    <p class="lead">KI &amp; Co. Mädelsabend: KI nutzen, ohne gut in KI sein zu müssen.</p>
+    <ul class="punkte">
+      <li>Start Donnerstag, 08.10.2026, 4× donnerstags um 19:30 Uhr, online</li>
+      <li>Höchstens 8 Frauen, dazu 2 Einzel-Sessions für jede</li>
+      <li>Jeder Abend beginnt mit Atem und endet mit Klang</li>
+      <li>147 € im ersten Durchgang</li>
+    </ul>
+    <p class="lead">Anmeldung: <span style="color:var(--gold-soft)">mentale-schonkost.de/kicomaedelsabend</span></p>
+    <div class="notiz"><b>Ca. 5 min.</b> Link in den Zoom-Chat posten.</div>
+  </section>
+
+  <!-- 18 · Klang -->
+  <section class="slide" data-min="0" data-teil="block">
+    <p class="block-hinweis">Abschluss · eigener Programmpunkt</p>
+    <h1>Danke. <em>Jetzt Klang.</em></h1>
+    <p class="lead leise">Einfach hören.</p>
+    <div class="notiz"><b>Ca. 5–10 min.</b> Klang zum Abschluss.</div>
+  </section>
+
+  <!-- 19 · Quellen -->
+  <section class="slide" data-min="0" data-teil="block">
+    <p class="kicker">Quellen</p>
+    <h2>Zum Nachlesen</h2>
+    <ol class="quellen">
+      <li>Arnsten, A. F. T. (2009). Stress signalling pathways that impair prefrontal cortex structure and function. <i>Nature Reviews Neuroscience</i>, 10, 410–422. <a href="https://www.nature.com/articles/nrn2648" target="_blank" rel="noopener">Link</a></li>
+      <li>Beilock, S. L., Gunderson, E. A., Ramirez, G. &amp; Levine, S. C. (2010). Female teachers' math anxiety affects girls' math achievement. <i>PNAS</i>, 107, 1860–1863. <a href="https://doi.org/10.1073/pnas.0910967107" target="_blank" rel="noopener">Link</a></li>
+      <li>Cai, Z., Fan, X. &amp; Du, J. (2017). Gender and attitudes toward technology use: A meta-analysis. <i>Computers &amp; Education</i>, 105. <a href="https://doi.org/10.1016/j.compedu.2016.11.003" target="_blank" rel="noopener">Link</a></li>
+      <li>Cowan, N. (2001). The magical number 4 in short-term memory. <i>Behavioral and Brain Sciences</i>, 24, 87–114. <a href="https://doi.org/10.1017/S0140525X01003922" target="_blank" rel="noopener">Link</a></li>
+      <li>Dickerson, S. S. &amp; Kemeny, M. E. (2004). Acute stressors and cortisol responses. <i>Psychological Bulletin</i>, 130, 355–391. <a href="https://doi.org/10.1037/0033-2909.130.3.355" target="_blank" rel="noopener">Link</a></li>
+      <li>Eysenck, M. W., Derakshan, N., Santos, R. &amp; Calvo, M. G. (2007). Anxiety and cognitive performance: Attentional control theory. <i>Emotion</i>, 7, 336–353. <a href="https://doi.org/10.1037/1528-3542.7.2.336" target="_blank" rel="noopener">Link</a></li>
+      <li>Flore, P. C. &amp; Wicherts, J. M. (2015). Does stereotype threat influence performance of girls in stereotyped domains? A meta-analysis. <i>Journal of School Psychology</i>, 53, 25–44. <a href="https://doi.org/10.1016/j.jsp.2014.10.002" target="_blank" rel="noopener">Link</a></li>
+      <li>Hargittai, E. &amp; Shafer, S. (2006). Differences in actual and perceived online skills: The role of gender. <i>Social Science Quarterly</i>, 87, 432–448. <a href="https://doi.org/10.1111/j.1540-6237.2006.00389.x" target="_blank" rel="noopener">Link</a></li>
+      <li>Initiative D21 &amp; IAB (2026). Digital Gender Gap. Schwerpunkt 2026: Künstliche Intelligenz. <a href="https://initiatived21.de/presse/gender-ai-gap-von-16-prozentpunkten-frauen-nutzen-ki-deutlich-seltener-als-maenner" target="_blank" rel="noopener">Link</a></li>
+      <li>Koch, S. C., Müller, S. M. &amp; Sieverding, M. (2008). Women and computers. Effects of stereotype threat on attribution of failure. <i>Computers &amp; Education</i>, 51, 1795–1803. <a href="https://archiv.ub.uni-heidelberg.de/volltextserver/19328/1/Koch-M%C3%BCller-Sieverding_women_computers_2008.pdf" target="_blank" rel="noopener">Link</a></li>
+      <li>Lieberman, M. D. et al. (2007). Putting feelings into words. <i>Psychological Science</i>, 18, 421–428. <a href="https://sanlab.psych.ucla.edu/wp-content/uploads/sites/31/2015/05/Lieberman_AL-2007.pdf" target="_blank" rel="noopener">Link</a></li>
+      <li>Mark, G., Gudith, D. &amp; Klocke, U. (2008). The cost of interrupted work: More speed and stress. <i>CHI '08</i>, 107–110. <a href="https://dl.acm.org/doi/10.1145/1357054.1357072" target="_blank" rel="noopener">Link</a></li>
+      <li>Ramirez, G. &amp; Beilock, S. L. (2011). Writing about testing worries boosts exam performance in the classroom. <i>Science</i>, 331, 211–213. <a href="https://www.science.org/doi/10.1126/science.1199427" target="_blank" rel="noopener">Link</a></li>
+      <li>Risko, E. F. &amp; Gilbert, S. J. (2016). Cognitive offloading. <i>Trends in Cognitive Sciences</i>, 20, 676–688. <a href="https://doi.org/10.1016/j.tics.2016.07.002" target="_blank" rel="noopener">Link</a></li>
+      <li>Rubinstein, J. S., Meyer, D. E. &amp; Evans, J. E. (2001). Executive control of cognitive processes in task switching. <i>JEP: Human Perception and Performance</i>, 27, 763–797. <a href="https://doi.org/10.1037/0096-1523.27.4.763" target="_blank" rel="noopener">Link</a></li>
+      <li>Spencer, S. J., Steele, C. M. &amp; Quinn, D. M. (1999). Stereotype threat and women's math performance. <i>Journal of Experimental Social Psychology</i>, 35, 4–28. <a href="https://doi.org/10.1006/jesp.1998.1373" target="_blank" rel="noopener">Link</a></li>
+      <li>Uttal, D. H. et al. (2013). The malleability of spatial skills: A meta-analysis of training studies. <i>Psychological Bulletin</i>, 139, 352–402. <a href="https://doi.org/10.1037/a0028446" target="_blank" rel="noopener">Link</a></li>
+      <li>Zaccaro, A. et al. (2018). How breath-control can change your life. <i>Frontiers in Human Neuroscience</i>, 12, 353. <a href="https://www.frontiersin.org/journals/human-neuroscience/articles/10.3389/fnhum.2018.00353/full" target="_blank" rel="noopener">Link</a></li>
+    </ol>
+  </section>
+
+  <svg class="welle" viewBox="0 0 1200 70" preserveAspectRatio="none" aria-hidden="true">
+    <g><path stroke-width="1.2" d="M0 35 C 100 10, 200 60, 300 35 S 500 10, 600 35 S 800 60, 900 35 S 1100 10, 1200 35"/></g>
+    <g><path stroke-width="0.8" d="M0 35 C 150 55, 250 15, 400 35 S 650 55, 800 35 S 1050 15, 1200 35"/></g>
+  </svg>
+
+  <p class="hilfe">← → blättern · N Notizen · F Vollbild</p>
+
+  <nav class="leiste" aria-label="Folien">
+    <span class="marke">Mentale Schonkost · KI &amp; Co. Mädelsabend</span>
+    <span class="steuer">
+      <button type="button" id="zurueck" aria-label="Vorherige Folie">←</button>
+      <span class="zaehler" id="zaehler">1 / 19</span>
+      <button type="button" id="weiter" aria-label="Nächste Folie">→</button>
+      <button type="button" id="notizen-knopf" aria-pressed="false">Notizen</button>
+    </span>
+  </nav>
+  <div class="fortschritt" id="fortschritt"></div>
+</div>
+
+<script>
+(function () {
+  const folien = Array.from(document.querySelectorAll('.slide'));
+  const zaehler = document.getElementById('zaehler');
+  const fortschritt = document.getElementById('fortschritt');
+  let jetzt = 0;
+
+  function lies(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
+  function schreib(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
+
+  function zeige(i) {
+    jetzt = Math.max(0, Math.min(folien.length - 1, i));
+    folien.forEach((f, n) => f.classList.toggle('aktiv', n === jetzt));
+    zaehler.textContent = (jetzt + 1) + ' / ' + folien.length;
+    fortschritt.style.width = ((jetzt + 1) / folien.length * 100) + '%';
+    if (location.hash !== '#f' + (jetzt + 1)) history.replaceState(null, '', '#f' + (jetzt + 1));
+  }
+  const start = /^#f(\d+)$/.exec(location.hash);
+  zeige(start ? Number(start[1]) - 1 : 0);
+  window.addEventListener('hashchange', () => {
+    const m = /^#f(\d+)$/.exec(location.hash);
+    if (m && Number(m[1]) - 1 !== jetzt) zeige(Number(m[1]) - 1);
+  });
+
+  document.getElementById('zurueck').addEventListener('click', () => zeige(jetzt - 1));
+  document.getElementById('weiter').addEventListener('click', () => zeige(jetzt + 1));
+
+  const notizKnopf = document.getElementById('notizen-knopf');
+  function notizen(an) {
+    document.body.classList.toggle('notizen', an);
+    notizKnopf.setAttribute('aria-pressed', String(an));
+  }
+  notizKnopf.addEventListener('click', () => notizen(!document.body.classList.contains('notizen')));
+
+  document.addEventListener('keydown', (e) => {
+    const t = e.target;
+    if (t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA')) return;
+    if (e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === ' ') { e.preventDefault(); zeige(jetzt + 1); }
+    else if (e.key === 'ArrowLeft' || e.key === 'PageUp') { e.preventDefault(); zeige(jetzt - 1); }
+    else if (e.key === 'Home') zeige(0);
+    else if (e.key === 'End') zeige(folien.length - 1);
+    else if (e.key === 'n' || e.key === 'N') notizen(!document.body.classList.contains('notizen'));
+    else if (e.key === 'f' || e.key === 'F') {
+      const el = document.documentElement;
+      if (!document.fullscreenElement && el.requestFullscreen) el.requestFullscreen().catch(() => {});
+      else if (document.exitFullscreen) document.exitFullscreen().catch(() => {});
+    }
+  });
+
+  // Wischen auf dem Handy
+  let x0 = null;
+  document.addEventListener('touchstart', (e) => { x0 = e.touches[0].clientX; }, { passive: true });
+  document.addEventListener('touchend', (e) => {
+    if (x0 === null) return;
+    const dx = e.changedTouches[0].clientX - x0;
+    if (Math.abs(dx) > 60) zeige(jetzt + (dx < 0 ? 1 : -1));
+    x0 = null;
+  });
+
+  // Sammelwand
+  const SCHLUESSEL = 'sammelwand-2026-10-01';
+  let wand = { nervt: [], blackout: [] };
+  try { const g = JSON.parse(lies(SCHLUESSEL) || 'null'); if (g && Array.isArray(g.nervt) && Array.isArray(g.blackout)) wand = g; } catch (e) {}
+
+  function male(liste) {
+    const ul = document.getElementById('liste-' + liste);
+    ul.textContent = '';
+    wand[liste].forEach((text, i) => {
+      const li = document.createElement('li');
+      const span = document.createElement('span');
+      span.textContent = text;
+      const weg = document.createElement('button');
+      weg.type = 'button';
+      weg.textContent = '×';
+      weg.setAttribute('aria-label', 'Entfernen: ' + text);
+      weg.addEventListener('click', () => { wand[liste].splice(i, 1); speichere(); male(liste); });
+      li.append(span, weg);
+      ul.append(li);
+    });
+  }
+  function speichere() { schreib(SCHLUESSEL, JSON.stringify(wand)); }
+
+  document.querySelectorAll('form[data-liste]').forEach((form) => {
+    const liste = form.dataset.liste;
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const input = form.querySelector('input');
+      const text = input.value.trim();
+      if (!text) return;
+      wand[liste].push(text);
+      input.value = '';
+      speichere();
+      male(liste);
+    });
+    male(liste);
+  });
+
+  const frage = document.getElementById('leeren-frage');
+  document.getElementById('wand-leeren').addEventListener('click', () => { frage.hidden = false; });
+  document.getElementById('leeren-nein').addEventListener('click', () => { frage.hidden = true; });
+  document.getElementById('leeren-ja').addEventListener('click', () => {
+    wand = { nervt: [], blackout: [] }; speichere(); male('nervt'); male('blackout'); frage.hidden = true;
+  });
+})();
+</script>
